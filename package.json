@@ -1,0 +1,28 @@
+{
+  "name": "texra-docs",
+  "version": "0.1.0",
+  "main": "index.js",
+  "scripts": {
+    "docs:build": "vitepress build .",
+    "docs:serve": "vitepress serve .",
+    "docs:deploy": "gh-pages -d .vitepress/dist"
+  },
+  "keywords": [
+    "texra",
+    "documentation",
+    "academic-writing",
+    "vscode-extension",
+    "ai"
+  ],
+  "author": "TeXRA Team",
+  "license": "MIT",
+  "description": "Documentation for TeXRA - AI-powered academic research assistant",
+  "devDependencies": {
+    "@vscode/codicons": "^0.0.36",
+    "gh-pages": "^6.3.0",
+    "mermaid": "^11.6.0",
+    "vitepress": "^1.6.3",
+    "vitepress-plugin-mermaid": "^2.0.17"
+  },
+  "type": "module"
+}
