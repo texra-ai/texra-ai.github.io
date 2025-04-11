@@ -5,7 +5,7 @@
   "scripts": {
     "docs:build": "vitepress build .",
     "docs:serve": "vitepress serve .",
-    "docs:deploy": "gh-pages -d .vitepress/dist"
+    "docs:deploy": "npm run docs:build && gh-pages -d .vitepress/dist -m \"Deploy docs [ci skip]\""
   },
   "keywords": [
     "texra",
