@@ -10,7 +10,7 @@ You can configure TeXRA through VS Code's settings:
 2. Search for "TeXRA" to see all available settings
 3. Adjust settings in the UI or edit the JSON directly
 
-<!-- ![VS Code Settings](/images/vscode-settings.png) -->
+![VS Code Settings](/images/vscode-settings.png)
 
 ## Core Configuration Options
 
@@ -46,9 +46,10 @@ Define which AI models appear in the model selection dropdown. The default list 
   "sonnet37",
   "sonnet35",
   "opus",
+  "o4-",
+  "o3",
   "o3-",
   "o1",
-  "o1-",
   "gpt45",
   "gpt4o",
   "gpt4ol",
@@ -322,10 +323,6 @@ Some TeXRA commands can be configured through their own settings:
 Configure TeXRA to work well with other extensions:
 
 ```json
-// LaTeX Workshop compatibility
-"latex-workshop.latex.outDir": "%DIR%/build",
-"texra.files.ignored.directories": ["build"],
-
 // Git extensions compatibility
 "git.enableSmartCommit": true,
 "texra.git.numberOfCommitsToShow": 20
@@ -354,3 +351,28 @@ Now that you understand how to configure TeXRA, you might want to explore:
 - [Custom Agents](/guide/custom-agents) - Learn how to create your own specialized agents
 - [Best Practices](/reference/best-practices) - Discover recommended settings for different workflows
 - [Troubleshooting](/reference/troubleshooting) - Resolve common configuration issues
+
+## Agent Execution Settings (Webview Interface)
+
+These settings, accessible directly in the main TeXRA webview, control how agents run:
+
+**Tool Configuration Dropdown** (<i class="codicon codicon-tools"></i> ○<i class="codicon codicon-chevron-down"></i> next to Instruction label):
+
+- **Reflect** (<i class="codicon codicon-refresh"></i>): Enables CoT agents to critique/improve their output (adds round 1). Increases cost/time, potentially quality.
+- **Attach TeX Count** (<i class="codicon codicon-symbol-numeric"></i>): Includes `texcount` output (word/header/math stats) in the agent's context. Requires `texcount` installed.
+- **Use Prefill from Input** (<i class="codicon codicon-edit"></i>): Uses the input file content to prefill the instruction box (if agent supports it).
+- **Print Input Prompt** (<i class="codicon codicon-file-code"></i>): Adds the full final prompt sent to the LLM to the ProgressBoard log (useful for debugging, increases log size).
+
+**Model/Agent Selection:**
+
+- **Agent** (<i class="codicon codicon-sparkle"></i>): Select the agent (see [Built-in](./built-in-agents.md) / [Custom](./custom-agents.md)).
+- **Model** (<i class="codicon codicon-robot"></i>): Select the language model (see [Models](./models.md)).
+
+**Instruction Header Actions:**
+
+- **Settings** (<i class="codicon codicon-gear"></i>): Open TeXRA extension settings.
+- **History** (<i class="codicon codicon-history"></i>): Open Agent Execution History panel.
+- **Pack** (<i class="codicon codicon-archive"></i>): Archive current Agent/Model/Input outputs to `History` folder.
+- **Clean** (<i class="codicon codicon-trash"></i>): Delete current Agent/Model/Input outputs.
+- **Magic Polish** (<i class="codicon codicon-sparkle"></i>): Use selected model to polish the instruction text.
+- **Erase Instruction** (<i class="codicon codicon-clear-all"></i>): Clear the instruction box.

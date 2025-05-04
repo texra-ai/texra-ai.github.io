@@ -23,7 +23,7 @@ Known for strong instruction following and context handling.
 
 | Model ID    | Key Strength / Use Case                     | Relative Cost | Relative Speed | Notes                        |
 | :---------- | :------------------------------------------ | :------------ | :------------- | :--------------------------- |
-| `opus`      | Highest quality, complex tasks              | $$$$          | Slow           |                              |
+| `opus`      | High quality, complex tasks                 | $$$$          | Slow           |                              |
 | `sonnet37`  | Strong all-rounder, good context            | $$$           | Medium         |                              |
 | `sonnet37T` | `sonnet37` with explicit reasoning steps    | $$$           | Medium         | Good for math, complex logic |
 | `sonnet35`  | Good balance of quality/cost (older Sonnet) | $$$           | Medium         |                              |
@@ -108,11 +108,8 @@ The specific models available by default and their identifiers (`sonnet37`, `gpt
 "texra.models": [
   "sonnet37T",
   "sonnet37",
-  "sonnet35",
-  "opus",
   "o3-",
   "o1",
-  "o1-",
   "gpt45",
   "gpt4o",
   "gpt4ol",

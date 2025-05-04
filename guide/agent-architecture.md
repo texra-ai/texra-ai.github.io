@@ -71,3 +71,107 @@ This basic flow, potentially with the reflection step, allows TeXRA agents to pe
 ::: warning Potential XML Issues
 Occasionally, LLMs might generate slightly malformed XML (e.g., missing closing tags), especially with very long or complex outputs. If TeXRA fails to extract content from an agent's output (`_r0_*.xml` or `_r1_*.xml` file), you might need to manually inspect the `.xml` file and correct any structural errors (like adding a missing `</document>` tag) before TeXRA can process it correctly. See the [Troubleshooting guide](../reference/troubleshooting.md#output-file-corruption) for more details.
 :::
+
+### Reflection
+
+After generating an initial output (Round 0), TeXRA agents with reflection enabled evaluate and refine their work (Round 1):
+
+<div class="reflection-pdf-viewer">
+  <div class="pdf-tabs">
+    <button type="button" class="pdf-tab active" data-pdf="/examples/draft_polish_r0_gemini25p_diff.pdf">Original vs. Round 0</button>
+    <button type="button" class="pdf-tab" data-pdf="/examples/draft_polish_r1_gemini25p_diff.pdf">Original vs. Round 1</button>
+    <button type="button" class="pdf-tab" data-pdf="/examples/draft_polish_r1_gemini25p_diffr1r0.pdf">Round 0 vs. Round 1</button>
+  </div>
+  <iframe src="/examples/draft_polish_r1_gemini25p_diffr1r0.pdf" id="pdf-frame" class="reflection-pdf-frame"></iframe>
+  <a href="/examples/draft_polish_r1_gemini25p_diffr1r0.pdf" target="_blank" id="pdf-link" class="reflection-pdf-link">View full example</a>
+</div>
+
+<div class="reflection-legend">
+  <div class="legend-item"><span class="del">Red strikethrough</span>: Round 0 content revised in Round 1</div>
+  <div class="legend-item"><span class="add">Blue underlined</span>: New/improved content added in Round 1</div>
+</div>
+
+<style>
+.reflection-pdf-viewer {
+  position: relative;
+  width: 100%;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin: 1rem 0;
+}
+.reflection-pdf-frame {
+  width: 100%;
+  height: 350px;
+  border: none;
+}
+.reflection-pdf-link {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+.reflection-pdf-link:hover {
+  background: var(--vp-c-brand);
+}
+.reflection-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 4px;
+  padding: 0.75rem;
+  background-color: var(--vp-c-bg-soft);
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.reflection-legend .del {
+  color: #ff5252;
+  text-decoration: line-through;
+  font-weight: 500;
+}
+.reflection-legend .add {
+  color: #0066cc;
+  text-decoration: underline;
+  font-weight: 500;
+}
+.pdf-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--vp-c-divider);
+  margin-bottom: 0.5rem;
+}
+.pdf-tab {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+  font-size: 0.9rem;
+  text-decoration: none;
+  color: inherit;
+  background: none;
+  font-family: inherit;
+  text-align: center;
+}
+.pdf-tab:hover {
+  background-color: var(--vp-c-bg-soft);
+}
+.pdf-tab.active {
+  background-color: var(--vp-c-bg-soft);
+  border-color: var(--vp-c-divider);
+  border-bottom-color: var(--vp-c-bg-soft);
+  color: var(--vp-c-brand);
+  font-weight: 500;
+  margin-bottom: -1px;
+}
+</style>
