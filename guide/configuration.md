@@ -61,6 +61,7 @@ Configure how TeXRA connects to AI model providers:
 - `useStreaming`: Enable streaming responses for better handling of long outputs
 - `useStreamingAnthropicReasoning`: Enable streaming specifically for Anthropic reasoning models
 - `useStreamingOpenAIReasoning`: Enable streaming specifically for OpenAI reasoning models
+- `useCopilot`: Use the Copilot language model through VS Code's Language Model API for instruction polishing and text connection
 
 ## File Management Configuration
 
@@ -129,15 +130,19 @@ Control which directories TeXRA ignores:
 
 ## LaTeX Configuration
 
-### LaTeX Indentation
+### LaTeX Formatting
 
-Configure LaTeX indentation behavior:
+Configure LaTeX formatting behavior:
 
 ```json
-"texra.latex.latexindentConfig": "/path/to/latexindent.yaml"
+"texra.latex.formatter": "latexindent",
+"texra.latex.latexindentConfig": "/path/to/latexindent.yaml",
+"texra.latex.texfmtConfig": "/path/to/tex-fmt.toml"
 ```
 
-This setting points to a configuration file for `latexindent`, which controls how LaTeX files are formatted.
+- `formatter`: Choose between `latexindent` and `tex-fmt`.
+- `latexindentConfig`: Path to a `latexindent` configuration file.
+- `texfmtConfig`: Path to a `tex-fmt` configuration file.
 
 ### TikZ Figure Processing
 
@@ -188,12 +193,12 @@ This setting specifies a custom root path for the TeXRA file explorer view, whic
 Control logging behavior:
 
 ```json
-"texra.logger.verboseOutput": false,
-"texra.debug.saveMessageObjects": false
+"texra.logger.debugMode": false,
+"texra.debug.saveDebugObjects": false
 ```
 
-- `verboseOutput`: Show detailed debug messages in the logger view
-- `saveMessageObjects`: Save message JSON objects to files before API calls (for debugging)
+- `debugMode`: Show detailed debug messages in the logger view
+- `saveDebugObjects`: Save message and response objects to JSON files for debugging purposes (includes both API messages and raw responses)
 
 ## Environment-Specific Configuration
 
@@ -253,7 +258,7 @@ For better performance:
 ```json
 "texra.model.useStreaming": true,
 "texra.files.ignored.directories": ["build", "node_modules", "versions", "history"],
-"texra.logger.verboseOutput": false
+"texra.logger.debugMode": false
 ```
 
 ### Optimizing for Quality
@@ -272,6 +277,7 @@ For team collaboration:
 ```json
 "texra.git.numberOfCommitsToShow": 30,
 "texra.latex.latexindentConfig": "${workspaceFolder}/.latexindent.yaml"
+"texra.latex.texfmtConfig": "${workspaceFolder}/tex-fmt.toml"
 ```
 
 Use workspace settings to ensure consistent configuration across the team.
@@ -327,7 +333,7 @@ Common configuration issues include:
 
 ## Next Steps
 
-Now that you understand how to configure TeXRA, you might want to explore:
+Now that you understand how to configure TeXRA, you may want to learn about:
 
 - [Custom Agents](/guide/custom-agents) - Learn how to create your own specialized agents
 - [Best Practices](/reference/best-practices) - Discover recommended settings for different workflows

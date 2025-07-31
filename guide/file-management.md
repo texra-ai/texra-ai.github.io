@@ -39,6 +39,22 @@ These are supporting files needed for proper document processing:
 
 Files containing visual or audio content, such as images, PDFs used as figures, or audio recordings. See the [Working with Figures](./working-with-figures.md) guide for details on supported types, UI controls, and automatic extraction.
 
+#### Pasting Images from Clipboard
+
+TeXRA supports directly pasting images from your clipboard into the instruction text area. This is useful for quickly including screenshots, diagrams, or other visual content:
+
+1. **Copy an image** to your clipboard (e.g., take a screenshot or copy from another application)
+2. **Click in the instruction text area** where you want to reference the image
+3. **Paste** (Ctrl/Cmd+V) - the image will be automatically:
+   - Saved to the workspace storage
+   - Referenced in the text as `[pasted_timestamp_hash.ext]`
+   - Added to the Media Files list
+   - Made available to the AI model
+
+The clipboard paste feature accepts many image formats (JPEG, PNG, GIF, WebP, BMP, SVG, TIFF, HEIC, HEIF, AVIF, PSD), but the actual formats that can be processed depend on what the selected AI model supports. Most vision models support common formats like JPEG, PNG, GIF, and WebP.
+
+Note: Pasted images are stored in workspace storage and automatically cleaned up after 3 days to save space.
+
 ## File Selection Interface
 
 The TeXRA interface provides a streamlined way to select and manage files using distinct sections for each file category (Input <i class="codicon codicon-file-code"></i>, Reference <i class="codicon codicon-book"></i>, Auxiliary <i class="codicon codicon-file-add"></i>, Media <i class="codicon codicon-file-media"></i>):
@@ -124,13 +140,6 @@ When reflection is enabled, you may also see:
 
 - Round 1: `paper_polish_r1_sonnet37.tex`
 
-### Custom Output Names
-
-For specific needs, you can override the default naming:
-
-1. Click the ">" toggle next to "Output Filename"
-2. Enter your custom filename (including extension) in the revealed input field.
-
 ## File Management Commands
 
 TeXRA provides several commands for managing generated files, accessible from the main interface or the ProgressBoard:
@@ -154,6 +163,27 @@ The "Clean" button (<i class="codicon codicon-trash"></i>) removes output files 
 3. Leaves original input files untouched
 
 Use this to clean up your workspace after reviewing the results.
+
+### Opening Generated Files
+
+Click the file names listed in the ProgressBoard to view the outputs. Files now
+open using VS Code's default viewer, so PDFs and images display correctly while
+`.tex` documents open in the editor. Absolute paths are also handled
+properly.
+
+### Task Run Storage
+
+Every time you run an agent, TeXRA creates a folder under its workspace storage
+directory:
+
+```text
+.vscode/texra/taskRuns/<executionId>/
+```
+
+This folder stores intermediate artifacts such as the optional debug JSON
+files written when the `texra.debug.saveDebugObjects` setting is enabled
+(saves both message and response objects for debugging). These directories
+are safe to delete if you need to reclaim space.
 
 ## Working with LaTeX Projects
 
@@ -238,7 +268,7 @@ Replace `/path/to/Dropbox` and `/path/to/local` with your actual Dropbox and loc
 
 ## Next Steps
 
-Now that you understand how to manage files in TeXRA, you might want to explore:
+Now that you understand how to manage files in TeXRA, you might want to learn about:
 
 - [Tool Integration](/guide/tool-integration) - Learn how TeXRA leverages external tools
 - [LaTeX Diff](/guide/latex-diff) - Understand how to compare document versions

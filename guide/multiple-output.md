@@ -4,7 +4,7 @@ TeXRA excels at managing complex academic projects often split across multiple f
 
 ## Why Use Multiple Files?
 
-Working with multiple files is essential when:
+Working with multiple files is often necessary when:
 
 - Your source document is split (e.g., `chapter1.tex`, `chapter2.tex`, `appendixA.tex`).
 - You need to apply consistent changes (like polishing or correcting) across related documents.
@@ -18,12 +18,11 @@ The TeXRA UI provides dedicated sections for managing multiple files:
 <!-- ![Multiple Files UI Placeholder](/images/multiple-files-ui.png) _(Placeholder: Screenshot highlighting Input Files & Multiple Outputs sections)_ -->
 
 - **Input Files**: Use the "▼" toggle to add multiple source files. These are typically concatenated and provided as context to the selected agent.
-- **Multiple Outputs**:
-  - Use the "▼" toggle to activate multiple output mode.
-  - Use the "+" button (<i class="codicon codicon-add"></i>) to list the _exact filenames_ you expect the agent to generate. **Order matters** if the agent references them by position.
-  - The list can be cleared (<i class="codicon codicon-trash"></i>).
-  - If this section is _not_ toggled/activated, TeXRA expects the agent to produce only a single output file, named based on the primary input file.
-- **Output Filename Override**: When _not_ using Multiple Outputs, you can specify a custom name for the single output file here. This is ignored if Multiple Outputs is active.
+  - **Multiple Outputs**:
+    - Use the "▼" toggle to activate multiple output mode.
+    - Use the "+" button (<i class="codicon codicon-add"></i>) to list the _exact filenames_ you expect the agent to generate. **Order matters** if the agent references them by position.
+    - The list can be cleared (<i class="codicon codicon-trash"></i>).
+    - If this section is _not_ toggled/activated, TeXRA expects the agent to produce only a single output file, named based on the primary input file.
 
 _(See [File Management](./file-management.md) for general UI controls.)_
 

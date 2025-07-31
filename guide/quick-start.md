@@ -21,6 +21,8 @@ Before you can use TeXRA's AI features, you need to provide API keys for the ser
 
 Repeat this process for each AI provider you plan to use with TeXRA.
 
+You can also place a `.env` file in your workspace with variables like `OPENAI_API_KEY`. TeXRA loads this automatically so you don't need to enter keys every time.
+
 ## Basic Workflow
 
 The typical TeXRA workflow consists of these steps:
@@ -39,11 +41,11 @@ Let's go through an example to illustrate the basic workflow.
 ### Step 1: Open a Document
 
 1. Open VS Code
-2. Navigate to the TeXRA panel in the sidebar (click the brain icon)
+2. Navigate to the TeXRA panel in the sidebar (click the brain icon) or press `Ctrl+Alt+M` (`Cmd+Option+M` on macOS)
 3. Open or create a LaTeX document from the workspace you'd like to improve
 
 ::: tip Example
-You can download our [example document](https://texra.ai/examples/draft.tex) to try TeXRA with a ready-made sample file.
+You can download our [example document](/examples/draft.tex) to try TeXRA with a ready-made sample file.
 :::
 
 ### Step 2: Select Files
@@ -102,7 +104,6 @@ Be specific about what you want! Vague instructions are like asking a genie for 
 1. When the agent completes, VS Code will open the generated output file (e.g., `yourfile_polish_r0_model.tex`).
 2. Review the changes made by the AI. Remember, it's smart, but hasn't passed its quals yet!
 3. You can compare the original and modified versions using:
-
    - **VS Code's Diff View**: Right-click on the original and output files in the Explorer and select "Compare Selected" for a side-by-side source code comparison.
 
      ![VS Code Compare View](/images/vscode-compare.png)

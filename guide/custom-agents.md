@@ -1,6 +1,6 @@
 # Custom Agents
 
-TeXRA allows you to create custom agents tailored to your specific academic research needs. This is where you can truly unleash the power of AI for your unique workflows (or just make an agent that writes everything in pirate speak, we won't judge). This guide focuses on the practical steps of creating the agent definition (`.yaml`) file.
+TeXRA is a VS Code extension that orchestrates AI-driven writing tools using YAML agent files. Each agent follows a chain-of-thought workflow with scratchpad planning and a final XML-wrapped output. This guide focuses on creating those definition (`.yaml`) files so you can tailor TeXRA to your research needs (or make an agent that writes everything in pirate speak—we won't judge).
 
 ::: info Agent Fundamentals
 Before creating a custom agent, it's highly recommended to understand the underlying concepts:
@@ -21,6 +21,10 @@ Custom agents reside in a specific directory.
 1.  **Find Existing**: Look for the "Custom Agents" folder within the [Agent Explorer](./agent-explorer.md).
 2.  **Configure (Optional)**: If the folder doesn't exist or you want to use a different location, set the path in VS Code Settings (`Ctrl+,`) under `texra.explorer.agentsDirectory`.
 
+### Automatic Creation
+
+If you'd like TeXRA to draft an agent for you, use the **Create AI Agent** <i class="codicon codicon-sparkle"></i> button in the Agent Explorer title bar. The wizard only asks for a short description and the default output filenames. TeXRA sends this information to a Claude model, which replies with the YAML enclosed in `<yaml>...</yaml>` tags. The extension extracts the content between those tags and saves it as a basic CoT template (single or multiple files) in your Custom Agents folder.
+
 ### Step 2: Create a New YAML File
 
 1.  Using the [Agent Explorer](./agent-explorer.md), right-click within your "Custom Agents" directory (or a subfolder).
@@ -29,7 +33,7 @@ Custom agents reside in a specific directory.
 
 ### Step 3: Define the Agent
 
-Open the newly created `.yaml` file and define your agent's structure. Start with a basic template and customize it. Here are the key fields:
+Open the newly created `.yaml` file and you'll find a starter template already inserted. Customize it to define your agent's structure. Here are the key fields:
 
 ```yaml
 # --- Agent Inheritance (Optional) ---
@@ -42,7 +46,7 @@ inherits: base # Or polish, correct, etc.
 # Override parent settings here if inheriting.
 settings:
   # Core Behavior
-  agentType: CoT # Type: 'CoT' (Chain of Thought) for complex reasoning with scratchpads, or 'direct' for simpler, direct output.
+  agentType: CoT # Type: 'CoT' (Chain of Thought) for complex reasoning with scratchpads, 'direct' for simpler direct output, or 'toolUse' for agents that call model tools.
   temperature: 0.1 # LLM creativity (0.0 = deterministic, >0 = more random). Can be overridden by user settings.
   isRewrite: true # Boolean: Does the agent primarily rewrite existing content (true) or generate new content (false)? Affects some internal handling.
 
@@ -95,6 +99,8 @@ prompts:
 #### Using Variables in Prompts (Jinja2 Templating)
 
 Prompts are processed using the Jinja2 templating engine, allowing you to insert dynamic information using `{{ variable_name }}` syntax. TeXRA provides several built-in variables based on the files and instructions you select in the UI:
+
+This mechanism is sometimes referred to as **Variable Retrieval (VR)**—the extension loads your chosen inputs, references, figures, and any additional context, then exposes them as template variables. For example, the text content of your main file becomes `{{ INPUT_CONTENT }}` while the full list of selected files can be accessed through `{{ ALL_INPUTS }}`. When you run the agent these placeholders are replaced with real data.
 
 **Common Variables:**
 
@@ -152,10 +158,79 @@ userPrefix: |
 - **Start Simple:** Begin with basic settings/prompts and add complexity incrementally.
 - **Test Iteratively:** Test frequently and review logs in the ProgressBoard.
 
+### Tool-Use Agents
+
+Tools live under `src/tools/` and each one defines its input schema with Zod.
+List the desired tools by name in your agent YAML. The registry includes tools
+like `str_replace_editor`, `bash`, `file_op`, `wolfram`, and `web_search` for
+searching the web.
+
+Example:
+
+```yaml
+settings:
+  agentType: toolUse
+  tools:
+    - str_replace_editor
+    - wolfram
+    - bash
+    - file_op
+    - web_search
+```
+
+The ProgressBoard shows the JSON passed to each tool along with the tool's
+response.
+
+### Example: Multiple Output Agent
+
+If your workflow requires several output files, your agent must structure its
+response using the `OUTPUT_FILES_ORDER` variable. Below is a simplified template
+similar to the built-in `polish_multiple.yaml`:
+
+```yaml
+inherits: polish
+settings:
+  agentType: CoT
+  documentTag: latex_documents
+  endTag: </latex_documents>
+  defaultOutputFiles:
+    - introduction.tex
+    - conclusion.tex
+
+prompts:
+  userRequest: |
+    {% if OUTPUT_FILES_ORDER %}
+    The output files should be in this order: {{ OUTPUT_FILES_ORDER }}.
+    {% endif %}
+
+    <scratchpad>
+    - Plan revisions for each file
+    </scratchpad>
+
+    <latex_documents>
+    <document name="{{ OUTPUT_FILES_ORDER[0] }}">
+    % UPDATED_FILE_1
+    </document>
+    <document name="{{ OUTPUT_FILES_ORDER[1] }}">
+    % UPDATED_FILE_2
+    </document>
+    </latex_documents>
+```
+
+This structure lets TeXRA save each `<document>` block to the corresponding
+filename from the UI list. See [Handling Multiple Files](./multiple-output.md)
+for more details.
+
 ### Step 4: Save and Reload
 
 1.  Save your `.yaml` file.
 2.  Reload the VS Code window (Command Palette > `Developer: Reload Window`).
 3.  Your new custom agent should now appear in the "Agent" dropdown menu in the TeXRA UI.
+
+### Strict XML Extraction
+
+TeXRA's `XmlOutputManager` parses the `<latex_document>` or `<latex_documents>` blocks in the AI output.
+It requires properly closed tags and, for multiple outputs, each `<document>` must include a `name` attribute that matches a filename from the UI.
+If tags are mismatched or a filename is wrong, extraction fails and no files are saved.
 
 For more complex examples and advanced configuration options like `requiredFiles` and `filePatternsContain`, examine the source `.yaml` files of the [Built-in Agents](./built-in-agents.md).

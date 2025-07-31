@@ -17,7 +17,7 @@ Unlike standard text diff tools (which can look like hieroglyphics when comparin
 
 ## The LaTeXdiffs Section
 
-The LaTeX diff functionality is accessible through the "LaTeXdiffs" section (<i class="codicon codicon-source-control"></i> LaTeXDiffs) in the TeXRA interface:
+The LaTeX diff functionality is accessible through the "LaTeXdiffs" section (<i class="codicon codicon-chevron-down"></i> LaTeXDiffs) in the TeXRA interface:
 
 <!-- ![LaTeXdiffs Section](/images/latexdiffs-section.png) -->
 
@@ -245,7 +245,7 @@ The intelligent merge process:
 For best results with LaTeX diff:
 
 1. **Consistent Formatting**: Use consistent indentation and line breaks
-2. **Run latexindent**: Format both documents before comparing
+2. **Run a formatter**: Use `latexindent` or `tex-fmt` on both documents before comparing
 3. **Sensible Line Breaks**: Break lines at logical points like sentences
 4. **Clean Documents**: Remove comments and unnecessary code
 
@@ -375,7 +375,7 @@ Maintain a clear version strategy:
 
 ## Next Steps
 
-Now that you understand TeXRA's LaTeX diff functionality, you might want to explore:
+Now that you understand TeXRA's LaTeX diff functionality, you may be interested in:
 
 - [Intelligent Merge](/guide/intelligent-merge) - Learn how to combine changes intelligently
 - [File Management](/guide/file-management) - Understand how to organize your files effectively

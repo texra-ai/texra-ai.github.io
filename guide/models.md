@@ -21,12 +21,15 @@ Here's a quick comparison of the models available by default in TeXRA:
 
 Known for strong instruction following and context handling.
 
-| Model ID    | Key Strength / Use Case                     | Relative Cost | Relative Speed | Notes                        |
-| :---------- | :------------------------------------------ | :------------ | :------------- | :--------------------------- |
-| `opus`      | High quality, complex tasks                 | $$$$          | Slow           |                              |
-| `sonnet37`  | Strong all-rounder, good context            | $$$           | Medium         |                              |
-| `sonnet37T` | `sonnet37` with explicit reasoning steps    | $$$           | Medium         | Good for math, complex logic |
-| `sonnet35`  | Good balance of quality/cost (older Sonnet) | $$$           | Medium         |                              |
+| Model ID    | Key Strength / Use Case                     | Relative Cost | Relative Speed | Notes                         |
+| :---------- | :------------------------------------------ | :------------ | :------------- | :---------------------------- |
+| `opus4T`    | Latest Opus with explicit reasoning steps   | $$$$          | Slow           | Claude 4 Opus with thinking   |
+| `opus4`     | Latest high quality, complex tasks          | $$$$          | Slow           | Claude 4 Opus                 |
+| `sonnet4T`  | Latest Sonnet with explicit reasoning steps | $$$           | Medium         | Claude 4 Sonnet with thinking |
+| `sonnet4`   | Latest strong all-rounder                   | $$$           | Medium         | Claude 4 Sonnet               |
+| `sonnet37T` | `sonnet37` with explicit reasoning steps    | $$$           | Medium         | Good for math, complex logic  |
+| `sonnet37`  | Strong all-rounder, good context            | $$$           | Medium         |                               |
+| `sonnet35`  | Good balance of quality/cost (older Sonnet) | $$$           | Medium         |                               |
 
 ### OpenAI Models
 
@@ -41,6 +44,8 @@ Known for strong reasoning and creative capabilities.
 | `gpt41--` | Long-context vision, cheapest       | $             | Medium         | 1M tokens context, nano |
 | `gpt4o`   | Strong all-rounder, vision          | $$$           | Medium         | Good default choice     |
 | `gpt4ol`  | Latest `gpt4o`, potentially better  | $$$           | Medium         |                         |
+| `o3`      | Coding, tool calling                | $$$           | Medium         |                         |
+| `o3pro`   | Reliable answers, heavy compute     | $$$$          | Slow           | `o3-pro`                |
 | `o3-`     | Fast reasoning                      | $$$           | Fast           | `o3-mini`               |
 | `o1-`     | Fast reasoning (smaller `o1`)       | $$$           | Fast           | `o1-mini`               |
 
@@ -58,12 +63,13 @@ Known for large context windows, multimodality, and speed/cost efficiency.
 
 ### DeepSeek Models
 
-Strong technical and coding performance, cost-effective.
+Strong technical and coding performance, cost-effective. DeepSeek's API now
+supports function calling so agents can use external tools during a run.
 
 | Model ID | Key Strength / Use Case     | Relative Cost | Relative Speed | Notes            |
 | :------- | :-------------------------- | :------------ | :------------- | :--------------- |
-| `DSV3`   | Good coding & general tasks | $             | Fast           | DeepSeek V3 Chat |
-| `DSR1`   | Advanced reasoning          | $$            | Medium         | DeepSeek R1      |
+| `dsv3`   | Good coding & general tasks | $             | Fast           | DeepSeek V3 Chat |
+| `dsr1`   | Advanced reasoning          | $$            | Medium         | DeepSeek R1      |
 
 ### Moonshot Kimi Models
 
@@ -74,6 +80,7 @@ High context models from Moonshot, suitable for complex reasoning and large docu
 | `kimit`  | Detailed reasoning with vision | $$$           | Medium         | Kimi Thinking Preview |
 | `kimi`   | Large context, general tasks   | $$            | Medium         | 128k context          |
 | `kimiv`  | Vision-enabled variant         | $$            | Medium         | 128k context, vision  |
+| `kimi2`  | Agent tasks                    | $$$           | Medium         | Kimi K2 0711 Preview  |
 
 ### DashScope Qwen Models
 
@@ -85,12 +92,22 @@ Cost-effective models from Alibaba with strong multilingual capabilities.
 | `qwenplus`  | Large context general purpose | $$            | Medium         | Qwen Plus  |
 | `qwenturbo` | Fast responses                | $             | Fast           | Qwen Turbo |
 
+### Copilot Models
+
+GitHub Copilot models are available through VS Code's built-in Language Model API.
+These models require user consent and sign in to GitHub Copilot.
+
+| Model ID    | Key Strength / Use Case    | Relative Cost | Relative Speed | Notes               |
+| :---------- | :------------------------- | :------------ | :------------- | :------------------ |
+| `copilot4o` | Strong all-rounder, vision | $$            | Medium         | Uses GPT-4o backend |
+
 ### Grok / xAI Models
 
 Large context models from xAI.
 
 | Model ID | Key Strength / Use Case              | Relative Cost | Relative Speed | Notes           |
 | :------- | :----------------------------------- | :------------ | :------------- | :-------------- |
+| `grok4`  | Very large context, strong reasoning | $$$           | Medium         | xAI Grok 4      |
 | `grok3`  | Large context, alternative reasoning | $$$           | Medium         | xAI Grok 3      |
 | `grok3-` | Faster Grok 3 (mini)                 | $$            | Fast           | xAI Grok 3 Mini |
 
@@ -112,7 +129,7 @@ Consider these factors:
 - **Task Complexity**: Simple corrections might only need a `$`/Fast model (`gemini2f`), while complex paper transformations benefit from `$$$$`/Slow models (`opus`, `o1`).
 - **Budget**: Use cost indicators ($ - $$$$) to guide selection.
 - **Speed**: If quick turnaround is needed, prefer Fast/Very Fast models.
-- **Special Capabilities**: Do you need explicit reasoning (`sonnet37T`, `gemini2fT`, `o1`, `o3-`, `o1-`, `DSR1`), vision (`gpt4o`, `gemini*`), native PDF/audio (`gemini*`), or very large context (`gemini*`, `gpt41`)?
+- **Special Capabilities**: Do you need explicit reasoning (`sonnet37T`, `gemini2fT`, `o1`, `o3-`, `o1-`, `dsr1`), vision (`gpt4o`, `gemini*`), native PDF/audio (`gemini*`), or very large context (`gemini*`, `gpt41`)?
 
 Experimentation is often key to finding the best model for your specific needs and writing style.
 
@@ -137,12 +154,15 @@ The specific models available by default and their identifiers (`sonnet37`, `gpt
   "gemini25p",
   "gemini25f",
   "gemini2fT",
-  "DSV3",
-  "DSR1",
+  "dsv3",
+  "dsr1",
+  "grok4",
   "grok3",
   "qwenplus",
   "kimit",
-  "kimiv"
+  "kimiv",
+  "kimi2",
+  "copilot4o"
 ]
 ```
 
@@ -170,12 +190,16 @@ Configure streaming in VS Code Settings:
 "texra.model.useStreamingAnthropicReasoning": false,
 
 // Specific toggle for OpenAI reasoning models
-"texra.model.useStreamingOpenAIReasoning": false
+"texra.model.useStreamingOpenAIReasoning": false,
 
-// Similar configuration for Google/DeepSeek/OpenRouter models
+// Specific toggle for Google models
+"texra.model.useStreamingGoogle": false
+
+// Similar configuration exists for DeepSeek and OpenRouter models
 ```
 
 ## Next Steps
 
 - [Built-in Agents](./built-in-agents.md): See which agents work well with different models.
 - [Configuration](./configuration.md): Learn about other model-related settings like streaming.
+- [OpenAI Responses API](./openai-responses-api.md): Overview of the new API used when `useOpenAIResponsesAPI` is enabled.

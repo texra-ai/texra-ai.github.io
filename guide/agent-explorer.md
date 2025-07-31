@@ -28,10 +28,12 @@ You can manage your custom agent files directly within the "Custom Agents" secti
 
 Available actions for **Custom Agents** include:
 
-- **New File** <i class="codicon codicon-new-file"></i>: Creates a new, empty file (e.g., `new-file.yaml`) within the selected folder (or the root custom agents folder). You will be prompted to rename it immediately.
+- **New File** <i class="codicon codicon-new-file"></i>: Creates a new file populated with a starter template (e.g., `new-file.yaml`) within the selected folder (or the root custom agents folder). You will be prompted to rename it immediately.
 - **New Folder** <i class="codicon codicon-new-folder"></i>: Creates a new folder within the selected folder. You will be prompted to rename it.
 - **Rename** <i class="codicon codicon-edit"></i>: Renames the selected custom file or folder.
 - **Delete** <i class="codicon codicon-trash"></i>: Deletes the selected custom file or folder (with confirmation).
+- **Add Agent to Config** <i class="codicon codicon-diff-added"></i>: Validates a YAML file and adds its agent name to `texra.agents`.
+- **Create AI Agent** <i class="codicon codicon-sparkle"></i>: Launches a wizard that collects a short description and output style (single vs. multiple files) then generates a starter YAML using Claude. See [Strict XML Extraction](./custom-agents.md#strict-xml-extraction) for why the YAML must be precise.
 
 **Important**: These management actions (New File, New Folder, Rename, Delete) are **not available** for items within the "Built-in Agents" section.
 

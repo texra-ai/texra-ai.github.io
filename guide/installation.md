@@ -6,7 +6,7 @@ This guide will walk you through the process of installing TeXRA and all its dep
 
 TeXRA is designed to work on all major operating systems with the following minimum requirements:
 
-- **Visual Studio Code**: Version 1.96.2 or newer
+- **Visual Studio Code**: Version 1.99 or newer
 - **Operating System**: Windows, macOS, or Linux
 - **Internet Connection**: Required for API access to language models
 
@@ -170,6 +170,8 @@ TeXRA requires API keys to access language models. Here's how to set them up:
 
 Alternatively, you can access the extension settings (including API key setup) by clicking the gear icon (<i class="codicon codicon-gear"></i>) in the TeXRA webview panel.
 
+TeXRA also loads environment variables from a `.env` file in your workspace. Define variables like `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` in this file to avoid entering keys manually.
+
 ![API Key Setup](/images/api-key-setup.png)
 
 ::: info Getting API Keys
@@ -196,19 +198,17 @@ If any component is missing, TeXRA will typically show an error message indicati
 ### Common Installation Issues
 
 1. **Extension Not Loading**:
-
    - Check VS Code's minimum version requirement (1.94.2+)
    - Look for errors in the Output panel (select "TeXRA" in the dropdown)
    - Try reinstalling the extension
 
 2. **LaTeX Processing Errors**:
-
    - Verify LaTeX is in your system PATH
-   - Run `pdflatex --version` in terminal to confirm installation
-   - Check if required LaTeX packages are installed
+
+- Run `latexmk --version` (or `pdflatex --version`) in terminal to confirm installation
+- Check if required LaTeX packages are installed
 
 3. **Image Processing Errors**:
-
    - Confirm GraphicsMagick/ImageMagick is properly installed
    - Verify Ghostscript is installed and accessible
    - Check PATH environment variables
@@ -228,4 +228,4 @@ If you encounter persistent installation issues:
 
 ## Next Steps
 
-With TeXRA and all dependencies installed, you're ready to start using the tool to enhance your academic research. Check out the [Quick Start Guide](/guide/quick-start) to learn the basics, or explore specific features in the other documentation sections.
+With TeXRA and all dependencies installed, you're ready to start using the tool to enhance your academic research. Check out the [Quick Start Guide](/guide/quick-start) to learn the basics, or examine specific features in the other documentation sections.
