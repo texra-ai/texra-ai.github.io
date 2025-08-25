@@ -96,7 +96,7 @@ dist
 
 # Gatsby cache and build output
 .cache/
-public
+# public (commented out for VitePress project)
 
 # vuepress build output
 .vuepress/dist
@@ -129,8 +129,8 @@ site/
 # Jekyll build output
 _site/
 
-# Hugo build output
-public/
+# Hugo build output (not applicable to this VitePress project)
+# public/
 resources/_gen/
 assets/jsconfig.json
 
