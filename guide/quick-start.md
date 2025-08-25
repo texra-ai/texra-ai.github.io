@@ -45,13 +45,18 @@ Let's go through an example to illustrate the basic workflow.
 3. Open or create a LaTeX document from the workspace you'd like to improve
 
 ::: tip Example
-You can download our [example document](/examples/draft.tex) to try TeXRA with a ready-made sample file.
+Run **TeXRA: Create Sample Project** from the Command Palette to add a ready-made example to your workspace. This creates a `draft.tex` file under `texra-sample/`. Open it, run **TeXRA: Set API Key** to add your credentials, then select an agent and model in the TeXRA panel. Finally, write your instruction and execute the agent to see results.
 :::
 
 ### Step 2: Select Files
 
 1. In the TeXRA panel, click the "Current" button next to "Input" to set your active document as the input file
 2. (Optional) Add reference, auxiliary, or figure files if needed for your task
+
+::: tip Onboarding Prompt
+The first time you choose an input file, TeXRA shows a tooltip explaining the selector.
+Select **Never remind again** to hide it permanently.
+:::
 
 ::: info Multiple Files
 For complex documents with multiple input files, use the "Multiple" dropdown to select additional files.
@@ -64,6 +69,11 @@ For complex documents with multiple input files, use the "Multiple" dropdown to 
 1. In the dropdown menus at the bottom of the instruction box, select:
    - **Agent**: `polish` (for improving writing)
    - **Model**: `sonnet37` (Claude 3.7 Sonnet) or another available model
+
+::: tip Onboarding Prompt
+When you first open the agent or model dropdown, a tooltip explains its role.
+You can dismiss these prompts with **Never remind again**.
+:::
 
 ![Agent and Model Selection](/images/agent-model-selection.png)
 
@@ -222,19 +232,19 @@ Here are some common tasks you can try with TeXRA:
 ### Fixing Grammar and Typos
 
 - **Agent**: `correct`
-- **Model**: `gemini25p` or `gpt41`
+- **Model**: `gemini25p`, `gpt41`, or `gpt5`
 - **Instruction**: "Fix grammatical errors and typos without changing the content or technical terminology."
 
 ### Converting a Paper to Slides
 
 - **Agent**: `paper2slide`
-- **Model**: `sonnet37T` or `gpt41`
+- **Model**: `sonnet37T` or `gpt5`
 - **Instruction**: "Convert this paper into presentation slides using the beamer template. Create approximately 12-15 slides highlighting the key points, methodology, and results."
 
 ### Improving Writing Style
 
 - **Agent**: `polish`
-- **Model**: `opus` or `sonnet37T`
+- **Model**: `opus41` or `sonnet37T`
 - **Instruction**: "Improve the writing style to make it more engaging and clear. Enhance the flow between paragraphs while preserving all technical content."
 
 ## Understanding the Output

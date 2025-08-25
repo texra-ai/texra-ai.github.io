@@ -43,7 +43,7 @@ default list is maintained in the [Models Guide](./models.md). Override it by
 specifying your own model identifiers:
 
 ```json
-"texra.models": ["sonnet37T", "gpt4o"]
+"texra.models": ["sonnet37T", "gpt5"]
 ```
 
 ### API Provider Settings
@@ -52,16 +52,49 @@ Configure how TeXRA connects to AI model providers:
 
 ```json
 "texra.model.useOpenRouter": false,
+"texra.model.useImprovedConnection": false,
+"texra.model.improvedConnectionDomain": "",
+"texra.model.baseUrlDeepSeek": "",
 "texra.model.useStreaming": false,
 "texra.model.useStreamingAnthropicReasoning": false,
 "texra.model.useStreamingOpenAIReasoning": false
 ```
 
 - `useOpenRouter`: Access models through OpenRouter instead of direct APIs
+- `useImprovedConnection`: Route all API requests through a proxy server
+- `improvedConnectionDomain`: Custom proxy domain when `useImprovedConnection` is enabled. Defaults to the built-in proxy when unset.
+  - ⚠️ **Security Warning:** When using a proxy, ensure you trust the proxy server as it will receive your API keys. Only use proxies from trusted sources.
+- `baseUrlDeepSeek`: Custom base URL for DeepSeek models; overrides the default `https://api.deepseek.com` endpoint
 - `useStreaming`: Enable streaming responses for better handling of long outputs
 - `useStreamingAnthropicReasoning`: Enable streaming specifically for Anthropic reasoning models
 - `useStreamingOpenAIReasoning`: Enable streaming specifically for OpenAI reasoning models
 - `useCopilot`: Use the Copilot language model through VS Code's Language Model API for instruction polishing and text connection
+
+| Provider         | Proxy path                  | Supported |
+| ---------------- | --------------------------- | --------- |
+| OpenAI           | `openai/v1`                 | ✅ Yes    |
+| Anthropic        | `anthropic/v1`              | ✅ Yes    |
+| Gemini (Google)  | `generativelanguage/v1beta` | ✅ Yes    |
+| xAI              | `xai`                       | ✅ Yes    |
+| OpenRouter       | `openrouter`                | ✅ Yes    |
+| Groq             | `groq/openai/v1`            | ✅ Yes    |
+| Perplexity       | `pplx`                      | ✅ Yes    |
+| Mistral          | `mistral`                   | ✅ Yes    |
+| DeepSeek         | N/A                         | ❌ No     |
+| Moonshot (Kimi)  | N/A                         | ❌ No     |
+| DashScope (Qwen) | N/A                         | ❌ No     |
+
+**Note:** Only the providers marked with ✅ are supported by the proxy. Other providers will use their direct API endpoints even when proxy is enabled.
+
+### Audio Settings
+
+Specify a custom path to the [SoX](http://sox.sourceforge.net/) binary when automatic detection fails:
+
+```json
+"texra.audio.soxPath": "C:\\Users\\thinking\\scoop\\apps\\sox\\current\\sox.exe"
+```
+
+If unset, TeXRA searches common install locations and your `PATH`.
 
 ## File Management Configuration
 
@@ -135,12 +168,14 @@ Control which directories TeXRA ignores:
 Configure LaTeX formatting behavior:
 
 ```json
-"texra.latex.formatter": "latexindent",
+"texra.latex.formatter": "none",
+"texra.latex.showLatexindentWarning": false,
 "texra.latex.latexindentConfig": "/path/to/latexindent.yaml",
 "texra.latex.texfmtConfig": "/path/to/tex-fmt.toml"
 ```
 
-- `formatter`: Choose between `latexindent` and `tex-fmt`.
+- `formatter`: Choose between `latexindent`, `tex-fmt`, or `none` to disable formatting.
+- `showLatexindentWarning`: Set to `false` to suppress missing `latexindent` warnings.
 - `latexindentConfig`: Path to a `latexindent` configuration file.
 - `texfmtConfig`: Path to a `tex-fmt` configuration file.
 
@@ -186,7 +221,7 @@ Configure the folder explorer view:
 "texra.explorer.agentsDirectory": "/path/to/custom/agents"
 ```
 
-This setting specifies a custom root path for the TeXRA file explorer view, which can be absolute or relative to the workspace root.
+This setting specifies a custom root path for the TeXRA file explorer view and must be an absolute path.
 
 ## Logger Configuration
 

@@ -23,31 +23,42 @@ Known for strong instruction following and context handling.
 
 | Model ID    | Key Strength / Use Case                     | Relative Cost | Relative Speed | Notes                         |
 | :---------- | :------------------------------------------ | :------------ | :------------- | :---------------------------- |
-| `opus4T`    | Latest Opus with explicit reasoning steps   | $$$$          | Slow           | Claude 4 Opus with thinking   |
-| `opus4`     | Latest high quality, complex tasks          | $$$$          | Slow           | Claude 4 Opus                 |
+| `opus41T`   | Latest Opus with explicit reasoning steps   | $$$$          | Slow           | Claude 4.1 Opus with thinking |
+| `opus41`    | Latest high quality, complex tasks          | $$$$          | Slow           | Claude 4.1 Opus               |
+| `opus4T`    | Opus 4 with explicit reasoning steps        | $$$$          | Slow           | Claude 4 Opus with thinking   |
+| `opus4`     | Opus 4 high quality, complex tasks          | $$$$          | Slow           | Claude 4 Opus                 |
 | `sonnet4T`  | Latest Sonnet with explicit reasoning steps | $$$           | Medium         | Claude 4 Sonnet with thinking |
 | `sonnet4`   | Latest strong all-rounder                   | $$$           | Medium         | Claude 4 Sonnet               |
 | `sonnet37T` | `sonnet37` with explicit reasoning steps    | $$$           | Medium         | Good for math, complex logic  |
 | `sonnet37`  | Strong all-rounder, good context            | $$$           | Medium         |                               |
 | `sonnet35`  | Good balance of quality/cost (older Sonnet) | $$$           | Medium         |                               |
 
+#### Sonnet 4 1M Context (Beta)
+
+To experiment with Anthropic's 1M-token context window for Sonnet 4, enable `"texra.model.useAnthropic1MBeta": true` in VS Code settings. The extension attaches the `context-1m-2025-08-07` beta header for these requests. Only Sonnet 4 supports this beta, and TeXRA still enforces the tier‑4 limit of 200 K tokens.
+
 ### OpenAI Models
 
 Known for strong reasoning and creative capabilities.
 
-| Model ID  | Key Strength / Use Case             | Relative Cost | Relative Speed | Notes                   |
-| :-------- | :---------------------------------- | :------------ | :------------- | :---------------------- |
-| `o1`      | Advanced reasoning, math, figures   | $$$$          | Slow           | Explicit reasoning      |
-| `gpt45`   | High quality, vision (Preview)      | $$$$          | Medium         |                         |
-| `gpt41`   | Long-context vision, powerful       | $$$           | Medium         | 1M tokens context       |
-| `gpt41-`  | Long-context vision, cost-effective | $$            | Medium         | 1M tokens context, mini |
-| `gpt41--` | Long-context vision, cheapest       | $             | Medium         | 1M tokens context, nano |
-| `gpt4o`   | Strong all-rounder, vision          | $$$           | Medium         | Good default choice     |
-| `gpt4ol`  | Latest `gpt4o`, potentially better  | $$$           | Medium         |                         |
-| `o3`      | Coding, tool calling                | $$$           | Medium         |                         |
-| `o3pro`   | Reliable answers, heavy compute     | $$$$          | Slow           | `o3-pro`                |
-| `o3-`     | Fast reasoning                      | $$$           | Fast           | `o3-mini`               |
-| `o1-`     | Fast reasoning (smaller `o1`)       | $$$           | Fast           | `o1-mini`               |
+| Model ID  | Key Strength / Use Case               | Relative Cost | Relative Speed | Notes                   |
+| :-------- | :------------------------------------ | :------------ | :------------- | :---------------------- |
+| `o1`      | Advanced reasoning, math, figures     | $$$$          | Slow           | Explicit reasoning      |
+| `gpt45`   | High quality, vision (Preview)        | $$$$          | Medium         |                         |
+| `gpt5`    | Flagship reasoning & coding           | $$$           | Medium         | 400k context            |
+| `gpt5-`   | Flagship mini, fast                   | $$            | Fast           | 400k context, mini      |
+| `gpt5--`  | Flagship nano, fastest                | $             | Very Fast      | 400k context, nano      |
+| `gpt41`   | Long-context vision, powerful         | $$$           | Medium         | 1M tokens context       |
+| `gpt41-`  | Long-context vision, cost-effective   | $$            | Medium         | 1M tokens context, mini |
+| `gpt41--` | Long-context vision, cheapest         | $             | Medium         | 1M tokens context, nano |
+| `gpt4o`   | Strong all-rounder, vision            | $$$           | Medium         | Good default choice     |
+| `gpt4ol`  | Latest `gpt4o`, potentially better    | $$$           | Medium         |                         |
+| `o3`      | Coding, tool calling                  | $$$           | Medium         |                         |
+| `o3pro`   | Reliable answers, heavy compute       | $$$$          | Slow           | `o3-pro`                |
+| `o3-`     | Fast reasoning                        | $$$           | Fast           | `o3-mini`               |
+| `o1-`     | Fast reasoning (smaller `o1`)         | $$$           | Fast           | `o1-mini`               |
+| `gptoss`  | Open-weight reasoning, large context  | $$            | Medium         | `gpt-oss-120b`          |
+| `gptoss-` | Open-weight reasoning, cost-effective | $             | Fast           | `gpt-oss-20b`           |
 
 ### Google Models
 
@@ -129,7 +140,7 @@ Consider these factors:
 - **Task Complexity**: Simple corrections might only need a `$`/Fast model (`gemini2f`), while complex paper transformations benefit from `$$$$`/Slow models (`opus`, `o1`).
 - **Budget**: Use cost indicators ($ - $$$$) to guide selection.
 - **Speed**: If quick turnaround is needed, prefer Fast/Very Fast models.
-- **Special Capabilities**: Do you need explicit reasoning (`sonnet37T`, `gemini2fT`, `o1`, `o3-`, `o1-`, `dsr1`), vision (`gpt4o`, `gemini*`), native PDF/audio (`gemini*`), or very large context (`gemini*`, `gpt41`)?
+- **Special Capabilities**: Do you need explicit reasoning (`sonnet37T`, `gemini2fT`, `o1`, `o3-`, `o1-`, `gptoss`, `gptoss-`, `dsr1`), vision (`gpt5`, `gpt4o`, `gemini*`), native PDF/audio (`gemini*`), or very large context (`gemini*`, `gpt41`, `gpt5`)?
 
 Experimentation is often key to finding the best model for your specific needs and writing style.
 
@@ -138,7 +149,7 @@ Experimentation is often key to finding the best model for your specific needs a
 You can customize which models appear in the TeXRA dropdown list via VS Code Settings (`Ctrl+,`). Search for `texra.models` and edit the JSON array. Here are the defaults:
 
 ::: tip Model Availability
-The specific models available by default and their identifiers (`sonnet37`, `gpt4o`, etc.) are maintained by the TeXRA developers and may change in future updates based on new releases and performance evaluations.
+The specific models available by default and their identifiers (`sonnet37`, `gpt5`, etc.) are maintained by the TeXRA developers and may change in future updates based on new releases and performance evaluations.
 :::
 
 ```json
@@ -148,8 +159,11 @@ The specific models available by default and their identifiers (`sonnet37`, `gpt
   "o3",
   "o4-",
   "o3-",
+  "gptoss",
+  "gptoss-",
   "o1",
   "gpt41",
+  "gpt5",
   "gpt4o",
   "gemini25p",
   "gemini25f",
