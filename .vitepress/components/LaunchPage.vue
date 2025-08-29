@@ -215,16 +215,10 @@
         <h4>How it works</h4>
         <ol>
           <li>Click "Launch Codespace" to open GitHub Codespaces</li>
-          <li>Wait for the Codespace to start (2-3 minutes first time)</li>
-          <li>Copy and run the setup command shown after clicking Launch</li>
+          <li>Wait for the Codespace to start (5-10 seconds)</li>
+          <li>Copy and run the setup command shown in ther terminal after clicking Launch</li>
           <li>Your repository will be cloned and configured automatically</li>
         </ol>
-        <p
-          style="margin-top: 1rem; color: var(--vp-c-text-3); font-size: 0.9rem"
-        >
-          <strong>⏱️ Note:</strong> First-time setup takes ~2 minutes to
-          download TeXLive packages. Subsequent launches will be much faster.
-        </p>
       </div>
     </div>
   </div>
