@@ -12,6 +12,7 @@ TeXRA primarily integrates with models from:
 4.  **Other Providers** (via OpenRouter, including Grok, DeepSeek)
 
 You can select the desired model from the dropdown list in the TeXRA UI.
+Hovering over an option shows its provider, context window, and estimated cost.
 
 ## Default Model Selection
 
@@ -41,22 +42,29 @@ To experiment with Anthropic's 1M-token context window for Sonnet 4, enable `"t
 
 Known for strong reasoning and creative capabilities.
 
-| Model ID  | Key Strength / Use Case               | Relative Cost | Relative Speed | Notes                   |
-| :-------- | :------------------------------------ | :------------ | :------------- | :---------------------- |
-| `o1`      | Advanced reasoning, math, figures     | $$$$          | Slow           | Explicit reasoning      |
-| `gpt45`   | High quality, vision (Preview)        | $$$$          | Medium         |                         |
+| Model ID  | Key Strength / Use Case                 | Relative Cost | Relative Speed | Notes                            |
+| :-------- | :-------------------------------------- | :------------ | :------------- | :------------------------------- |
+| `o1`      | Advanced reasoning, math, figures       | $$$$          | Slow           | Explicit reasoning               |
+| `gpt45`   | High quality, vision (Preview)          | $$$$          | Medium         |                                  |
+| `gpt5`    | Flagship reasoning & coding           | $$$           | Medium         | 400k context                     |
+| `gpt5-`   | Flagship mini, fast                   | $$            | Fast           | 400k context, mini               |
+| `gpt5--`  | Flagship nano, fastest                | $             | Very Fast      | 400k context, nano               |
 | `gpt5`    | Flagship reasoning & coding           | $$$           | Medium         | 400k context            |
 | `gpt5-`   | Flagship mini, fast                   | $$            | Fast           | 400k context, mini      |
 | `gpt5--`  | Flagship nano, fastest                | $             | Very Fast      | 400k context, nano      |
-| `gpt41`   | Long-context vision, powerful         | $$$           | Medium         | 1M tokens context       |
-| `gpt41-`  | Long-context vision, cost-effective   | $$            | Medium         | 1M tokens context, mini |
-| `gpt41--` | Long-context vision, cheapest         | $             | Medium         | 1M tokens context, nano |
-| `gpt4o`   | Strong all-rounder, vision            | $$$           | Medium         | Good default choice     |
-| `gpt4ol`  | Latest `gpt4o`, potentially better    | $$$           | Medium         |                         |
-| `o3`      | Coding, tool calling                  | $$$           | Medium         |                         |
-| `o3pro`   | Reliable answers, heavy compute       | $$$$          | Slow           | `o3-pro`                |
-| `o3-`     | Fast reasoning                        | $$$           | Fast           | `o3-mini`               |
-| `o1-`     | Fast reasoning (smaller `o1`)         | $$$           | Fast           | `o1-mini`               |
+| `gpt41`   | Long-context vision, powerful           | $$$           | Medium         | 1M tokens context                |
+| `gpt41-`  | Long-context vision, cost-effective     | $$            | Medium         | 1M tokens context, mini          |
+| `gpt41--` | Long-context vision, cheapest           | $             | Medium         | 1M tokens context, nano          |
+| `gpt4o`   | Strong all-rounder, vision              | $$$           | Medium         | Good default choice              |
+| `gpt4ol`  | Latest `gpt4o`, potentially better      | $$$           | Medium         |                                  |
+| `o3`      | Coding, tool calling                    | $$$           | Medium         |                                  |
+| `o3pro`   | Reliable answers, heavy compute         | $$$$          | Slow           | `o3-pro`                         |
+| `o3-`     | Fast reasoning                          | $$$           | Fast           | `o3-mini`                        |
+| `o1-`     | Fast reasoning (smaller `o1`)           | $$$           | Fast           | `o1-mini`                        |
+| `gptoss`  | Open-weight reasoning, large context  | $$            | Medium         | `gpt-oss-120b` (OpenRouter only) |
+| `gptoss-` | Open-weight reasoning, cost-effective | $             | Fast           | `gpt-oss-20b` (OpenRouter only)  |
+
+> **Note:** GPT-5 reasoning summaries require additional account verification. TeXRA disables them by default—enable `"texra.model.gpt5ReasoningSummary": true` if your account supports this feature.
 | `gptoss`  | Open-weight reasoning, large context  | $$            | Medium         | `gpt-oss-120b`          |
 | `gptoss-` | Open-weight reasoning, cost-effective | $             | Fast           | `gpt-oss-20b`           |
 
@@ -86,22 +94,62 @@ supports function calling so agents can use external tools during a run.
 
 High context models from Moonshot, suitable for complex reasoning and large documents.
 
-| Model ID | Key Strength / Use Case        | Relative Cost | Relative Speed | Notes                 |
-| :------- | :----------------------------- | :------------ | :------------- | :-------------------- |
-| `kimit`  | Detailed reasoning with vision | $$$           | Medium         | Kimi Thinking Preview |
-| `kimi`   | Large context, general tasks   | $$            | Medium         | 128k context          |
-| `kimiv`  | Vision-enabled variant         | $$            | Medium         | 128k context, vision  |
-| `kimi2`  | Agent tasks                    | $$$           | Medium         | Kimi K2 0711 Preview  |
+**Kimi K2** is Moonshot's open-source 1T‑parameter MoE model (32B active).
+It excels at coding and agentic tasks but currently lacks multimodal and
+thought-mode support. The 0905 preview offers a 256k context window, and a
+high-speed turbo variant is also available.
+
+| Model ID     | Key Strength / Use Case        | Relative Cost | Relative Speed | Notes                                              |
+| :----------- | :----------------------------- | :------------ | :------------- | :------------------------------------------------- |
+| `kimit`      | Detailed reasoning with vision | $$$           | Medium         | Kimi Thinking Preview                              |
+| `kimi`       | Large context, general tasks   | $$            | Medium         | 128k context                                       |
+| `kimiv`      | Vision-enabled variant         | $$            | Medium         | 128k context, vision                               |
+| `kimi2`      | Agent tasks, 256k context      | $$$           | Medium         | Kimi K2 0905 Preview (`moonshotai/kimi-k2-0905`)   |
+| `kimi2turbo` | Fast agent tasks               | $$$$          | Very Fast      | Kimi K2 Turbo Preview (`moonshotai/kimi-k2-turbo`) |
+
+The earlier Kimi K2 0711 model remains available on OpenRouter as `moonshotai/kimi-k2`.
+
+Additional resources: [API](https://platform.moonshot.ai) –
+$0.15/million input tokens (cache hit), $0.60/million input tokens (cache
+miss), $2.50/million output tokens. [Tech blog](https://moonshotai.github.io/Kimi-K2/),
+[Weights & code](https://huggingface.co/moonshotai),
+[GitHub](https://github.com/MoonshotAI/Kimi-K2).
 
 ### DashScope Qwen Models
 
 Cost-effective models from Alibaba with strong multilingual capabilities.
 
-| Model ID    | Key Strength / Use Case       | Relative Cost | Relative Speed | Notes      |
-| :---------- | :---------------------------- | :------------ | :------------- | :--------- |
-| `qwenmax`   | Advanced reasoning            | $$            | Medium         | Qwen Max   |
-| `qwenplus`  | Large context general purpose | $$            | Medium         | Qwen Plus  |
-| `qwenturbo` | Fast responses                | $             | Fast           | Qwen Turbo |
+| Model ID    | Key Strength / Use Case                    | Relative Cost | Relative Speed | Notes                       |
+| :---------- | :----------------------------------------- | :------------ | :------------- | :-------------------------- |
+| `qwen3max`  | Best-in-class reasoning, 256k ctx          | $$$           | Medium         | Qwen3 Max, no deep thinking |
+| `qwenplus`  | Hybrid reasoning, 1M ctx                   | $$            | Medium         | Qwen3 Plus, enable_thinking |
+| `qwenturbo` | Fast responses with optional thinking mode | $             | Fast           | Qwen Turbo, enable_thinking |
+
+Deep thinking models first stream their reasoning before the final answer.
+`qwenplus` and `qwenturbo` support this mode. Pass `enable_thinking: true`
+in the request body to turn it on; commercial tiers disable it by default.
+`qwen3max` always runs in non-thinking mode.
+
+```python
+from openai import OpenAI
+import os
+
+client = OpenAI(
+    api_key=os.getenv("DASHSCOPE_API_KEY"),
+    base_url="https://dashscope-intl.aliyuncs.com/compatible-mode/v1",
+)
+
+resp = client.chat.completions.create(
+    model="qwen-plus-2025-07-28",
+    messages=[{"role": "user", "content": "Who are you?"}],
+    extra_body={"enable_thinking": True},
+)
+print(resp.choices[0].message.reasoning_content)
+print(resp.choices[0].message.content)
+```
+
+Use the `thinking_budget` parameter to cap how many tokens the reasoning step
+can consume.
 
 ### Copilot Models
 

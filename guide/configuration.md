@@ -31,10 +31,16 @@ Control which agents are available in the dropdown menu. Below is the default li
   "paper2note",
   "polish_cover",
   "solve_qi",
-  "transcribe_audio"
+"transcribe_audio"
   // Additional custom agents can be added here
 ]
 ```
+
+If an agent listed here lacks a corresponding `.yaml` file, it appears disabled
+in the main view. A banner provides quick actions to edit the list, set or open
+the custom agents directory, or read the documentation. Agents with a matching
+`_multiple.yaml` file show a codicon next to their name to indicate multi-output
+support.
 
 ### Model Configuration
 
@@ -57,7 +63,9 @@ Configure how TeXRA connects to AI model providers:
 "texra.model.baseUrlDeepSeek": "",
 "texra.model.useStreaming": false,
 "texra.model.useStreamingAnthropicReasoning": false,
-"texra.model.useStreamingOpenAIReasoning": false
+"texra.model.useStreamingOpenAIReasoning": false,
+"texra.model.useOpenAIResponsesAPI": true,
+"texra.model.gpt5ReasoningSummary": false
 ```
 
 - `useOpenRouter`: Access models through OpenRouter instead of direct APIs
@@ -68,6 +76,8 @@ Configure how TeXRA connects to AI model providers:
 - `useStreaming`: Enable streaming responses for better handling of long outputs
 - `useStreamingAnthropicReasoning`: Enable streaming specifically for Anthropic reasoning models
 - `useStreamingOpenAIReasoning`: Enable streaming specifically for OpenAI reasoning models
+- `useOpenAIResponsesAPI`: Use OpenAI's Responses API instead of Chat Completions when available
+- `gpt5ReasoningSummary`: Request reasoning summaries from GPT-5 models (requires verified account and user tier)
 - `useCopilot`: Use the Copilot language model through VS Code's Language Model API for instruction polishing and text connection
 
 | Provider         | Proxy path                  | Supported |
@@ -107,6 +117,12 @@ Control which file types TeXRA includes:
   ".txt",
   ".tex",
   ".md"
+],
+"texra.files.included.referenceExtensions": [
+  ".txt",
+  ".tex",
+  ".md",
+  ".bbl"
 ],
 "texra.files.included.mediaExtensions": [
   ".png",
@@ -382,7 +398,6 @@ These settings, accessible directly in the main TeXRA webview, control how agent
 
 - **Reflect** (<i class="codicon codicon-refresh"></i>): Enables CoT agents to critique/improve their output (adds round 1). Increases cost/time, potentially quality.
 - **Attach TeX Count** (<i class="codicon codicon-symbol-numeric"></i>): Includes `texcount` output (word/header/math stats) in the agent's context. Requires `texcount` installed.
-- **Use Prefill from Input** (<i class="codicon codicon-edit"></i>): Uses the input file content to prefill the instruction box (if agent supports it).
 - **Print Input Prompt** (<i class="codicon codicon-file-code"></i>): Adds the full final prompt sent to the LLM to the ProgressBoard log (useful for debugging, increases log size).
 
 **Model/Agent Selection:**
