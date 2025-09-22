@@ -65,8 +65,7 @@ Known for strong reasoning and creative capabilities.
 | `gptoss-` | Open-weight reasoning, cost-effective | $             | Fast           | `gpt-oss-20b` (OpenRouter only)  |
 
 > **Note:** GPT-5 reasoning summaries require additional account verification. TeXRA disables them by default—enable `"texra.model.gpt5ReasoningSummary": true` if your account supports this feature.
-| `gptoss`  | Open-weight reasoning, large context  | $$            | Medium         | `gpt-oss-120b`          |
-| `gptoss-` | Open-weight reasoning, cost-effective | $             | Fast           | `gpt-oss-20b`           |
+
 
 ### Google Models
 
@@ -105,7 +104,7 @@ high-speed turbo variant is also available.
 | `kimi`       | Large context, general tasks   | $$            | Medium         | 128k context                                       |
 | `kimiv`      | Vision-enabled variant         | $$            | Medium         | 128k context, vision                               |
 | `kimi2`      | Agent tasks, 256k context      | $$$           | Medium         | Kimi K2 0905 Preview (`moonshotai/kimi-k2-0905`)   |
-| `kimi2turbo` | Fast agent tasks               | $$$$          | Very Fast      | Kimi K2 Turbo Preview (`moonshotai/kimi-k2-turbo`) |
+| `kimi2turbo` | Fast agent tasks               | $$          | Very Fast      | Kimi K2 Turbo Preview (`moonshotai/kimi-k2-turbo`) |
 
 The earlier Kimi K2 0711 model remains available on OpenRouter as `moonshotai/kimi-k2`.
 
