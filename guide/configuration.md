@@ -49,7 +49,7 @@ default list is maintained in the [Models Guide](./models.md). Override it by
 specifying your own model identifiers:
 
 ```json
-"texra.models": ["sonnet37T", "gpt5"]
+"texra.models": ["sonnet45T", "gpt5", "gpt5pro"]
 ```
 
 ### API Provider Settings
@@ -65,7 +65,8 @@ Configure how TeXRA connects to AI model providers:
 "texra.model.useStreamingAnthropicReasoning": false,
 "texra.model.useStreamingOpenAIReasoning": false,
 "texra.model.useOpenAIResponsesAPI": true,
-"texra.model.gpt5ReasoningSummary": false
+"texra.model.gpt5ReasoningSummary": false,
+"texra.model.instructionPolishModel": "sonnet45"
 ```
 
 - `useOpenRouter`: Access models through OpenRouter instead of direct APIs
@@ -77,7 +78,8 @@ Configure how TeXRA connects to AI model providers:
 - `useStreamingAnthropicReasoning`: Enable streaming specifically for Anthropic reasoning models
 - `useStreamingOpenAIReasoning`: Enable streaming specifically for OpenAI reasoning models
 - `useOpenAIResponsesAPI`: Use OpenAI's Responses API instead of Chat Completions when available
-- `gpt5ReasoningSummary`: Request reasoning summaries from GPT-5 models (requires verified account and user tier)
+- `instructionPolishModel`: Short name of the model TeXRA uses to polish instruction text when Copilot is disabled. Values match the identifiers listed in [Models](./models.md).
+- `gpt5ReasoningSummary`: Request reasoning summaries from GPT-5 family models, including GPT-5 Pro (requires verified account and user tier)
 - `useCopilot`: Use the Copilot language model through VS Code's Language Model API for instruction polishing and text connection
 
 | Provider         | Proxy path                  | Supported |
@@ -245,11 +247,13 @@ Control logging behavior:
 
 ```json
 "texra.logger.debugMode": false,
-"texra.debug.saveDebugObjects": false
+"texra.debug.saveDebugObjects": false,
+"texra.debug.saveInputPrompt": false
 ```
 
 - `debugMode`: Show detailed debug messages in the logger view
 - `saveDebugObjects`: Save message and response objects to JSON files for debugging purposes (includes both API messages and raw responses)
+- `saveInputPrompt`: Persist the final model input prompt as an XML file (stored alongside other debug artifacts when an execution ID is available)
 
 ## Environment-Specific Configuration
 
@@ -396,9 +400,12 @@ These settings, accessible directly in the main TeXRA webview, control how agent
 
 **Tool Configuration Dropdown** (<i class="codicon codicon-tools"></i> ○<i class="codicon codicon-chevron-down"></i> next to Instruction label):
 
-- **Reflect** (<i class="codicon codicon-refresh"></i>): Enables CoT agents to critique/improve their output (adds round 1). Increases cost/time, potentially quality.
 - **Attach TeX Count** (<i class="codicon codicon-symbol-numeric"></i>): Includes `texcount` output (word/header/math stats) in the agent's context. Requires `texcount` installed.
-- **Print Input Prompt** (<i class="codicon codicon-file-code"></i>): Adds the full final prompt sent to the LLM to the ProgressBoard log (useful for debugging, increases log size).
+- **Attach Diagnostics** (<i class="codicon codicon-tools"></i>): Appends LaTeX compilation logs and other diagnostics to the agent prompt.
+
+Reflection rounds are now controlled entirely by the agent definition. Choose agents whose `userRequest` prompt list includes follow-up entries (or create custom ones) when you need an automatic follow-up critique.
+
+To capture the full prompt sent to the model, enable the `Save Input Prompt` debug setting in VS Code Settings (`texra.debug.saveInputPrompt`).
 
 **Model/Agent Selection:**
 

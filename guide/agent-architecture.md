@@ -17,8 +17,7 @@ These `.yaml` files have two main parts (and thankfully, YAML is usually less pr
 2.  **`prompts`**: Contain text templates that TeXRA fills with your specific context (input files, instructions) to guide the LLM at different stages:
     - `systemPrompt`: Sets the overall role and high-level instructions for the LLM.
     - `userPrefix`: Provides the main context, including your input file(s) (available via e.g., `{{ INPUT_CONTENT }}`) and the specific instruction you typed in the UI (available via `{{ INSTRUCTION }}`).
-    - `userRequest`: Asks the LLM to perform the initial task (Round 0). Often instructs the LLM to think within `<scratchpad>` tags and then output the main content wrapped within the XML tags defined by `settings.documentTag` (e.g., `<document>...</document>`).
-    - `userReflect`: Asks the LLM to review and improve its first response (Round 1, only used if "Reflect" is enabled).
+    - `userRequest`: Asks the LLM to perform the initial task (Round 0). Often instructs the LLM to think within `<scratchpad>` tags and then output the main content wrapped within the XML tags defined by `settings.documentTag` (e.g., `<document>...</document>`). You can also provide an **array** here: the first entry becomes the round 0 request, and any additional entries drive automatic reflection rounds (Round 1+). When a run consumes more rounds than entries you specify, the first reflection template is reused.
 
 \_(Prompts use Jinja2 templating. For a detailed list of available variables like `{{ INPUT_CONTENT }}` and how to use them, see the [Custom Agents](./custom-agents.md) guide.)\*
 
@@ -67,20 +66,22 @@ TeXRA constructs the conversation by merging your agent's `systemPrompt`, the co
 Internally, TeXRA now assembles these prompt segments through the `PromptBuilder` helper. The builder collects the agent's templates and rendered variables once and exposes focused methods:
 
 - `buildInitialPrompts()` returns the trio of system, prefix, and request messages used for round 0.
-- `buildReflectPrompt(round)` renders the appropriate `userReflect` template for a given reflection round.
+- `buildUserRequest(round)` renders the appropriate request template for the supplied round, falling back to the first reflection template when later rounds are undefined.
 - `getPrefill(round)` provides the prefill seed that is streamed to the assistant before each model turn.
 
 Agents that inherit from `BaseReflectionAgent` can override the protected `getPromptBuilder()` hook to supply a subclassed builder. This makes it easy to add new phases (e.g., a planning stage) or to customize how prefills are computed without rewriting the round-processing logic. When you introduce a specialised agent, create a derived `PromptBuilder` that extends the base implementation, override or add the necessary methods, and return it from your agent's `getPromptBuilder()` override so the lifecycle automatically uses your custom prompts.
 
-**Optional Reflection (Round 1):**
+**Reflection Rounds (Round 1+):**
 
-If you enable the "Reflect" option in the Tool Config section of the UI, TeXRA performs an additional step after Round 0 finishes successfully:
+When an agent definition includes multiple `userRequest` entries (or increases `settings.rounds`), TeXRA automatically performs additional passes after Round 0 completes:
 
-1.  **Reflection Prompt:** It uses the agent's `userReflect` prompt template to ask the LLM to critique and improve its own Round 0 output (which is included in the conversation history).
+1.  **Reflection Prompt:** It renders the appropriate reflection template from subsequent `userRequest` entries to ask the LLM to critique and improve its own Round 0 output (which is included in the conversation history).
 2.  **LLM Interaction (Round 1):** The LLM generates a revised response.
 3.  **Processing:** TeXRA saves this refined output to a separate file (e.g., `filename_agent_r1_model.ext`).
 
-This basic flow, potentially with the reflection step, allows TeXRA agents to perform targeted tasks based on their specific definitions and your instructions. For concrete examples of built-in agents, see the [Built-in Agent Reference](./built-in-agents.md).
+You can control how many rounds execute by editing the agent YAML—either adjust `settings.rounds` for the maximum number of passes or add more entries to `userRequest`. The run stops early whenever the model signals it is finished or when no reflection prompt content is supplied.
+
+This basic flow, potentially with the reflection rounds, allows TeXRA agents to perform targeted tasks based on their specific definitions and your instructions. For concrete examples of built-in agents, see the [Built-in Agent Reference](./built-in-agents.md).
 
 ::: warning Potential XML Issues
 Occasionally, LLMs might generate slightly malformed XML (e.g., missing closing tags), especially with very long or complex outputs. If TeXRA fails to extract content from an agent's output (`_r0_*.xml` or `_r1_*.xml` file), you might need to manually inspect the `.xml` file and correct any structural errors (like adding a missing `</document>` tag) before TeXRA can process it correctly. See the [Troubleshooting guide](../reference/troubleshooting.md#output-file-corruption) for more details.
@@ -88,7 +89,7 @@ Occasionally, LLMs might generate slightly malformed XML (e.g., missing closing 
 
 ### Reflection
 
-After generating an initial output (Round 0), TeXRA agents with reflection enabled evaluate and refine their work (Round 1):
+After generating an initial output (Round 0), TeXRA agents that define reflection prompts evaluate and refine their work (Round 1):
 
 <div class="reflection-pdf-viewer">
   <div class="pdf-tabs">

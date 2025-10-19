@@ -22,6 +22,6 @@ When `"texra.model.useOpenAIResponsesAPI"` is enabled, the extension automatical
 
 This keeps requests small and simplifies conversation management.
 
-The open-weight models `gpt-oss-120b` and `gpt-oss-20b` are available only via
-OpenRouter.
-
+The open-weight models `gpt-oss-120b` and `gpt-oss-20b` (available only via
+OpenRouter) also use the Responses API automatically, even if the setting isn't
+enabled.

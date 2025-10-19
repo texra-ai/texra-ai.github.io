@@ -22,50 +22,51 @@ Here's a quick comparison of the models available by default in TeXRA:
 
 Known for strong instruction following and context handling.
 
-| Model ID    | Key Strength / Use Case                     | Relative Cost | Relative Speed | Notes                         |
-| :---------- | :------------------------------------------ | :------------ | :------------- | :---------------------------- |
-| `opus41T`   | Latest Opus with explicit reasoning steps   | $$$$          | Slow           | Claude 4.1 Opus with thinking |
-| `opus41`    | Latest high quality, complex tasks          | $$$$          | Slow           | Claude 4.1 Opus               |
-| `opus4T`    | Opus 4 with explicit reasoning steps        | $$$$          | Slow           | Claude 4 Opus with thinking   |
-| `opus4`     | Opus 4 high quality, complex tasks          | $$$$          | Slow           | Claude 4 Opus                 |
-| `sonnet4T`  | Latest Sonnet with explicit reasoning steps | $$$           | Medium         | Claude 4 Sonnet with thinking |
-| `sonnet4`   | Latest strong all-rounder                   | $$$           | Medium         | Claude 4 Sonnet               |
-| `sonnet37T` | `sonnet37` with explicit reasoning steps    | $$$           | Medium         | Good for math, complex logic  |
-| `sonnet37`  | Strong all-rounder, good context            | $$$           | Medium         |                               |
-| `sonnet35`  | Good balance of quality/cost (older Sonnet) | $$$           | Medium         |                               |
+| Model ID    | Key Strength / Use Case                     | Relative Cost | Relative Speed | Notes                           |
+| :---------- | :------------------------------------------ | :------------ | :------------- | :------------------------------ |
+| `opus41T`   | Latest Opus with explicit reasoning steps   | $$$$          | Slow           | Claude 4.1 Opus with thinking   |
+| `opus41`    | Latest high quality, complex tasks          | $$$$          | Slow           | Claude 4.1 Opus                 |
+| `opus4T`    | Opus 4 with explicit reasoning steps        | $$$$          | Slow           | Claude 4 Opus with thinking     |
+| `opus4`     | Opus 4 high quality, complex tasks          | $$$$          | Slow           | Claude 4 Opus                   |
+| `sonnet45T` | Latest Sonnet with explicit reasoning steps | $$$           | Medium         | Claude 4.5 Sonnet with thinking |
+| `sonnet45`  | Latest strong all-rounder                   | $$$           | Medium         | Claude 4.5 Sonnet               |
+| `sonnet4T`  | Sonnet 4 with explicit reasoning steps      | $$$           | Medium         | Claude 4 Sonnet with thinking   |
+| `sonnet4`   | Sonnet 4 strong all-rounder                 | $$$           | Medium         | Claude 4 Sonnet                 |
+| `sonnet37T` | `sonnet37` with explicit reasoning steps    | $$$           | Medium         | Good for math, complex logic    |
+| `sonnet37`  | Strong all-rounder, good context            | $$$           | Medium         |                                 |
+| `sonnet35`  | Good balance of quality/cost (older Sonnet) | $$$           | Medium         |                                 |
+| `haiku45T`  | Fast Claude 4.5 with explicit reasoning     | $$            | Fast           | Claude 4.5 Haiku with thinking  |
+| `haiku45`   | Fast Claude 4.5 responses                   | $$            | Fast           | Claude 4.5 Haiku                |
 
-#### Sonnet 4 1M Context (Beta)
+#### Sonnet 4 / 4.5 1M Context (Beta)
 
-To experiment with Anthropic's 1M-token context window for Sonnet 4, enable `"texra.model.useAnthropic1MBeta": true` in VS Code settings. The extension attaches the `context-1m-2025-08-07` beta header for these requests. Only Sonnet 4 supports this beta, and TeXRA still enforces the tier‑4 limit of 200 K tokens.
+To experiment with Anthropic's 1M-token context window for Sonnet 4 or 4.5, enable `"texra.model.useAnthropic1MBeta": true` in VS Code settings. The extension attaches the `context-1m-2025-08-07` beta header for these requests. Only Sonnet 4-family models support this beta, and TeXRA still enforces the tier‑4 limit of 200 K tokens.
 
 ### OpenAI Models
 
 Known for strong reasoning and creative capabilities.
 
-| Model ID  | Key Strength / Use Case                 | Relative Cost | Relative Speed | Notes                            |
-| :-------- | :-------------------------------------- | :------------ | :------------- | :------------------------------- |
-| `o1`      | Advanced reasoning, math, figures       | $$$$          | Slow           | Explicit reasoning               |
-| `gpt45`   | High quality, vision (Preview)          | $$$$          | Medium         |                                  |
+| Model ID  | Key Strength / Use Case               | Relative Cost | Relative Speed | Notes                            |
+| :-------- | :------------------------------------ | :------------ | :------------- | :------------------------------- |
+| `o1`      | Advanced reasoning, math, figures     | $$$$          | Slow           | Explicit reasoning               |
+| `gpt45`   | High quality, vision (Preview)        | $$$$          | Medium         |                                  |
+| `gpt5pro` | Premium reasoning & coding            | $$$$          | Slow           | 400k ctx, 272k max output        |
 | `gpt5`    | Flagship reasoning & coding           | $$$           | Medium         | 400k context                     |
 | `gpt5-`   | Flagship mini, fast                   | $$            | Fast           | 400k context, mini               |
 | `gpt5--`  | Flagship nano, fastest                | $             | Very Fast      | 400k context, nano               |
-| `gpt5`    | Flagship reasoning & coding           | $$$           | Medium         | 400k context            |
-| `gpt5-`   | Flagship mini, fast                   | $$            | Fast           | 400k context, mini      |
-| `gpt5--`  | Flagship nano, fastest                | $             | Very Fast      | 400k context, nano      |
-| `gpt41`   | Long-context vision, powerful           | $$$           | Medium         | 1M tokens context                |
-| `gpt41-`  | Long-context vision, cost-effective     | $$            | Medium         | 1M tokens context, mini          |
-| `gpt41--` | Long-context vision, cheapest           | $             | Medium         | 1M tokens context, nano          |
-| `gpt4o`   | Strong all-rounder, vision              | $$$           | Medium         | Good default choice              |
-| `gpt4ol`  | Latest `gpt4o`, potentially better      | $$$           | Medium         |                                  |
-| `o3`      | Coding, tool calling                    | $$$           | Medium         |                                  |
-| `o3pro`   | Reliable answers, heavy compute         | $$$$          | Slow           | `o3-pro`                         |
-| `o3-`     | Fast reasoning                          | $$$           | Fast           | `o3-mini`                        |
-| `o1-`     | Fast reasoning (smaller `o1`)           | $$$           | Fast           | `o1-mini`                        |
+| `gpt41`   | Long-context vision, powerful         | $$$           | Medium         | 1M tokens context                |
+| `gpt41-`  | Long-context vision, cost-effective   | $$            | Medium         | 1M tokens context, mini          |
+| `gpt41--` | Long-context vision, cheapest         | $             | Medium         | 1M tokens context, nano          |
+| `gpt4o`   | Strong all-rounder, vision            | $$$           | Medium         | Good default choice              |
+| `gpt4ol`  | Latest `gpt4o`, potentially better    | $$$           | Medium         |                                  |
+| `o3`      | Coding, tool calling                  | $$$           | Medium         |                                  |
+| `o3pro`   | Reliable answers, heavy compute       | $$$$          | Slow           | `o3-pro`                         |
+| `o3-`     | Fast reasoning                        | $$$           | Fast           | `o3-mini`                        |
+| `o1-`     | Fast reasoning (smaller `o1`)         | $$$           | Fast           | `o1-mini`                        |
 | `gptoss`  | Open-weight reasoning, large context  | $$            | Medium         | `gpt-oss-120b` (OpenRouter only) |
 | `gptoss-` | Open-weight reasoning, cost-effective | $             | Fast           | `gpt-oss-20b` (OpenRouter only)  |
 
-> **Note:** GPT-5 reasoning summaries require additional account verification. TeXRA disables them by default—enable `"texra.model.gpt5ReasoningSummary": true` if your account supports this feature.
-
+> **Note:** GPT-5 and GPT-5 Pro reasoning summaries require additional account verification. TeXRA disables them by default—enable `"texra.model.gpt5ReasoningSummary": true` if your account supports this feature.
 
 ### Google Models
 
@@ -104,7 +105,7 @@ high-speed turbo variant is also available.
 | `kimi`       | Large context, general tasks   | $$            | Medium         | 128k context                                       |
 | `kimiv`      | Vision-enabled variant         | $$            | Medium         | 128k context, vision                               |
 | `kimi2`      | Agent tasks, 256k context      | $$$           | Medium         | Kimi K2 0905 Preview (`moonshotai/kimi-k2-0905`)   |
-| `kimi2turbo` | Fast agent tasks               | $$          | Very Fast      | Kimi K2 Turbo Preview (`moonshotai/kimi-k2-turbo`) |
+| `kimi2turbo` | Fast agent tasks               | $$$$          | Very Fast      | Kimi K2 Turbo Preview (`moonshotai/kimi-k2-turbo`) |
 
 The earlier Kimi K2 0711 model remains available on OpenRouter as `moonshotai/kimi-k2`.
 
@@ -118,11 +119,11 @@ miss), $2.50/million output tokens. [Tech blog](https://moonshotai.github.io/Kim
 
 Cost-effective models from Alibaba with strong multilingual capabilities.
 
-| Model ID    | Key Strength / Use Case                    | Relative Cost | Relative Speed | Notes                       |
-| :---------- | :----------------------------------------- | :------------ | :------------- | :-------------------------- |
-| `qwen3max`  | Best-in-class reasoning, 256k ctx          | $$$           | Medium         | Qwen3 Max, no deep thinking |
-| `qwenplus`  | Hybrid reasoning, 1M ctx                   | $$            | Medium         | Qwen3 Plus, enable_thinking |
-| `qwenturbo` | Fast responses with optional thinking mode | $             | Fast           | Qwen Turbo, enable_thinking |
+| Model ID    | Key Strength / Use Case                    | Relative Cost | Relative Speed | Notes                              |
+| :---------- | :----------------------------------------- | :------------ | :------------- | :--------------------------------- |
+| `qwen3max`  | Flagship coding agent, 262k ctx            | $$$           | Medium         | Qwen3-Max latest, no thinking mode |
+| `qwenplus`  | Hybrid thinking, 1M ctx + tool use         | $$            | Medium         | Qwen Plus latest, enable_thinking  |
+| `qwenturbo` | Fast responses with optional thinking mode | $             | Fast           | Qwen Turbo, enable_thinking        |
 
 Deep thinking models first stream their reasoning before the final answer.
 `qwenplus` and `qwenturbo` support this mode. Pass `enable_thinking: true`
@@ -139,7 +140,7 @@ client = OpenAI(
 )
 
 resp = client.chat.completions.create(
-    model="qwen-plus-2025-07-28",
+    model="qwen-plus-latest",
     messages=[{"role": "user", "content": "Who are you?"}],
     extra_body={"enable_thinking": True},
 )
@@ -187,7 +188,7 @@ Consider these factors:
 - **Task Complexity**: Simple corrections might only need a `$`/Fast model (`gemini2f`), while complex paper transformations benefit from `$$$$`/Slow models (`opus`, `o1`).
 - **Budget**: Use cost indicators ($ - $$$$) to guide selection.
 - **Speed**: If quick turnaround is needed, prefer Fast/Very Fast models.
-- **Special Capabilities**: Do you need explicit reasoning (`sonnet37T`, `gemini2fT`, `o1`, `o3-`, `o1-`, `gptoss`, `gptoss-`, `dsr1`), vision (`gpt5`, `gpt4o`, `gemini*`), native PDF/audio (`gemini*`), or very large context (`gemini*`, `gpt41`, `gpt5`)?
+- **Special Capabilities**: Do you need explicit reasoning (`sonnet45T`, `sonnet37T`, `gemini2fT`, `o1`, `o3-`, `o1-`, `gptoss`, `gptoss-`, `dsr1`), vision (`gpt5`, `gpt5pro`, `gpt4o`, `gemini*`), native PDF/audio (`gemini*`), or very large context (`gemini*`, `gpt41`, `gpt5`, `gpt5pro`)?
 
 Experimentation is often key to finding the best model for your specific needs and writing style.
 
@@ -196,36 +197,39 @@ Experimentation is often key to finding the best model for your specific needs a
 You can customize which models appear in the TeXRA dropdown list via VS Code Settings (`Ctrl+,`). Search for `texra.models` and edit the JSON array. Here are the defaults:
 
 ::: tip Model Availability
-The specific models available by default and their identifiers (`sonnet37`, `gpt5`, etc.) are maintained by the TeXRA developers and may change in future updates based on new releases and performance evaluations.
+The specific models available by default and their identifiers (`sonnet45`, `gpt5`, `gpt5pro`, etc.) are maintained by the TeXRA developers and may change in future updates based on new releases and performance evaluations.
 :::
 
 ```json
 "texra.models": [
-  "sonnet37T",
-  "sonnet37",
-  "o3",
-  "o4-",
-  "o3-",
-  "gptoss",
-  "gptoss-",
-  "o1",
-  "gpt41",
-  "gpt5",
-  "gpt4o",
   "gemini25p",
   "gemini25f",
-  "gemini2fT",
-  "dsv3",
-  "dsr1",
-  "grok4",
-  "grok3",
-  "qwenplus",
-  "kimit",
-  "kimiv",
+  "opus41T",
+  "sonnet45T",
+  "sonnet4T",
+  "gpt5",
+  "gpt41",
+  "deepseek",
+  "deepseekT",
   "kimi2",
-  "copilot4o"
+  "qwen3max",
+  "grok4"
 ]
 ```
+
+### Instruction Polishing Model
+
+TeXRA also uses a dedicated setting for polishing instruction text before an agent run. Set
+`"texra.model.instructionPolishModel"` to any short name from the enum (same as `texra.models`) to pick the model that
+handles this formatting step when Copilot is disabled. The default is `sonnet45`.
+
+```json
+"texra.model.instructionPolishModel": "sonnet45"
+```
+
+This setting is independent from the dropdown list—use it to lock polishing to a stable model while you
+experiment with other agents. The setting accepts any model from the same enum as `texra.models`, ensuring
+you can only select valid models.
 
 ## Using OpenRouter
 

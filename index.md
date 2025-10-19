@@ -2,8 +2,8 @@
 layout: home
 hero:
   name: TeXRA
-  text: Your Intelligent Academic Research Assistant
-  tagline: AI assistance to help with your academic research in VS Code
+  text: Reliable AI Workflows for Scientific Discovery
+  tagline: Agentic research assistant for mathematicians, physicists, and research engineers
   image:
     src: /logo-1024x1024.svg
     alt: TeXRA Logo
@@ -13,7 +13,7 @@ hero:
       link: /guide/
     - theme: alt
       text: Install from Marketplace
-      link: https://marketplace.visualstudio.com/items?itemName=texra-ai.texra
+      link: vscode:extension/texra-ai.texra
     - theme: alt
       text: Try it on Web
       link: /launch
@@ -37,7 +37,7 @@ hero:
       <div class="step-number">2</div>
       <div class="step-content">
         <h3>Choose Agent/Model</h3>
-        <p>Select a specialized agent (correct, polish)</p>
+        <p>Select a specialized agent and model</p>
         <div class="step-icon">🤖</div>
       </div>
     </div>
@@ -68,12 +68,12 @@ hero:
 
 ## Why TeXRA?
 
-Standard LLM interfaces struggle with the nuances of academic work – complex formatting, precise terminology, large documents, and multi-step reasoning. TeXRA overcomes these limitations by integrating AI deeply into your workflow with:
+AI scientists need more than a chat window. TeXRA keeps research grounded in reproducible workflows and transparent reasoning:
 
-- **Agentic Design**: Specialized agents tackle specific tasks like correcting, polishing, drawing, and transforming documents.
-- **Reflection & Tool Use**: Agents can critique their own work and leverage external tools (like `latexdiff`, `texcount`) for enhanced accuracy and observability.
-- **Context Awareness**: Seamlessly handles multi-file projects and references, giving you control over the context provided to the LLM (up to its limits).
-- **Transparency & Control**: Uses a structured, customizable agent system – not a black box.
+- **Reliable scientific loops** – capture every run with logs, diffs, and audit trails so collaborators can verify changes.
+- **Specialized agent roster** – summon correction, polishing, figure generation, and document transformation agents tuned for LaTeX-heavy projects.
+- **Integrated verification tools** – trigger `latexdiff`, `texcount`, compilation checks, and custom scripts directly from the agent run.
+- **Context you control** – work across multi-file projects, reference libraries, and datasets without losing track of provenance.
 
 ## Key Capabilities
 
@@ -140,6 +140,8 @@ Installing TeXRA is simple. Follow our [Installation Guide](/guide/installation)
   <a href="/guide/" class="cta-button">Explore the Documentation</a>
   <a href="/guide/quick-start" class="cta-button cta-button-alt">Quick Start Guide</a>
 </div>
+
+If you run into a bug, drop us a line at [contact@texra.ai](mailto:contact@texra.ai).
 
 <style>
 .features-grid {
