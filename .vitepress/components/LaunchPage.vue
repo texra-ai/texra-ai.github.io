@@ -15,13 +15,14 @@
           v-model="repoType"
           @change="handleRepoTypeChange"
         >
+          <option value="direct">Direct Launch (Empty Workspace)</option>
           <option value="overleaf">Overleaf Git</option>
           <option value="github-private">GitHub (Private)</option>
           <option value="github-public">GitHub (Public)</option>
         </select>
       </div>
 
-      <div class="form-group">
+      <div v-if="repoType !== 'direct'" class="form-group">
         <label for="repo-url">Repository URL</label>
         <input
           id="repo-url"
@@ -37,6 +38,11 @@
         <small v-if="repoType === 'overleaf'">
           Copy the Git URL from Menu → Git in your Overleaf project
         </small>
+      </div>
+
+      <div v-if="repoType === 'direct'" class="info-note">
+        <p>🚀 This will launch a fresh VS Code Codespace with TeXLive and TeXRA pre-installed. No repository will be cloned.</p>
+        <p style="margin-top: 0.75rem;">💡 You can add Overleaf projects or other repositories later using TeXRA commands or git clone.</p>
       </div>
 
       <div v-if="repoType === 'overleaf'" class="auth-selection">
@@ -157,45 +163,67 @@
         </button>
       </div>
 
-      <div v-if="error === 'success' && setupCommand" class="success-message">
+      <div v-if="error === 'success'" class="success-message">
         <h3>✅ Codespace creation page opened!</h3>
 
-        <div
-          v-if="repoType === 'overleaf' && authMethod === 'secrets'"
-          class="auth-info"
-        >
-          🔐 Using Codespace Secrets for authentication
-        </div>
-
-        <div class="command-section">
-          <p>
-            📋 After the Codespace starts, paste this command in the terminal:
+        <div v-if="repoType === 'direct'" class="script-info">
+          <p>⚡ Your Codespace will be ready with:</p>
+          <ul>
+            <li>TeXLive fully installed</li>
+            <li>TeXRA AI assistant pre-configured</li>
+            <li>VS Code ready to use</li>
+            <li>No repository cloned (empty workspace)</li>
+          </ul>
+          <p style="margin-top: 1rem;">
+            Just wait for the Codespace to start and begin working!
           </p>
-          <div class="command-box">
-            <code>{{ setupCommand }}</code>
-            <button @click="copyToClipboard" class="copy-button">
-              {{ copySuccess ? '✓ Copied!' : '📋 Copy' }}
-            </button>
+          <div class="quick-tip" style="margin-top: 1rem; padding: 0.75rem; background: var(--vp-c-bg-alt); border-radius: 6px; border-left: 3px solid var(--vp-c-brand);">
+            <strong>💡 Adding Overleaf projects later:</strong>
+            <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem;">
+              Once in the Codespace, you can use TeXRA commands to connect to Overleaf or manually run:<br/>
+              <code style="background: var(--vp-c-bg); padding: 0.2rem 0.4rem; border-radius: 3px; font-size: 0.85rem;">git clone https://git.overleaf.com/[project-id]</code>
+            </p>
           </div>
         </div>
 
-        <div class="script-info">
-          <p>⚡ The script will:</p>
-          <ul v-if="repoType === 'overleaf' && authMethod === 'secrets'">
-            <li>Use your OVERLEAF_EMAIL and OVERLEAF_TOKEN secrets</li>
-            <li>Clone your repository automatically</li>
-            <li>Configure git for you</li>
-          </ul>
-          <ul v-else-if="repoType === 'overleaf'">
-            <li>Use the credentials you provided</li>
-            <li>Clone your repository</li>
-            <li>Configure git with your email</li>
-          </ul>
-          <ul v-else>
-            <li>Clone your repository</li>
-            <li>Configure git with your credentials</li>
-            <li>Set up the TeXRA environment</li>
-          </ul>
+        <div v-else>
+          <div
+            v-if="repoType === 'overleaf' && authMethod === 'secrets'"
+            class="auth-info"
+          >
+            🔐 Using Codespace Secrets for authentication
+          </div>
+
+          <div class="command-section">
+            <p>
+              📋 After the Codespace starts, paste this command in the terminal:
+            </p>
+            <div class="command-box">
+              <code>{{ setupCommand }}</code>
+              <button @click="copyToClipboard" class="copy-button">
+                {{ copySuccess ? '✓ Copied!' : '📋 Copy' }}
+              </button>
+            </div>
+          </div>
+
+          <div class="script-info">
+            <p>⚡ The script will:</p>
+            <ul v-if="repoType === 'overleaf' && authMethod === 'secrets'">
+              <li>Use your OVERLEAF_EMAIL and OVERLEAF_TOKEN secrets</li>
+              <li>Clone your repository automatically</li>
+              <li>Configure git for you</li>
+            </ul>
+            <ul v-else-if="repoType === 'overleaf'">
+              <li>Use the credentials you provided</li>
+              <li>Clone your repository</li>
+              <li>Configure git with your email</li>
+            </ul>
+            <ul v-else>
+              <li>Clone your repository</li>
+              <li>Configure git with your credentials</li>
+              <li>Set up the TeXRA environment</li>
+            </ul>
+          </div>
         </div>
 
         <p class="bookmark-tip">
@@ -227,7 +255,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 
-const repoType = ref('overleaf');
+const repoType = ref('direct');
 const repoUrl = ref('');
 const username = ref('');
 const password = ref('');
@@ -261,6 +289,11 @@ const copyToClipboard = async () => {
 };
 
 const isValid = computed(() => {
+  // Direct launch doesn't need any validation
+  if (repoType.value === 'direct') {
+    return true;
+  }
+
   if (!repoUrl.value) return false;
 
   // For Overleaf, accept Git URLs with project IDs
@@ -306,7 +339,28 @@ const launchCodespace = async () => {
   loading.value = true;
 
   try {
-    // Prepare configuration
+    // Build Codespace URL
+    const workspaceRepo = 'texra-ai/texra-workspace';
+    const codespaceUrl = new URL(`https://github.com/codespaces/new`);
+
+    // Add parameters
+    codespaceUrl.searchParams.set('hide_repo_select', 'true');
+    codespaceUrl.searchParams.set('ref', 'main');
+    codespaceUrl.searchParams.set('repo', workspaceRepo);
+    codespaceUrl.searchParams.set('skip_quickstart', 'true');
+
+    // Open the Codespace creation page
+    window.open(codespaceUrl.toString(), '_blank');
+
+    // For direct launch, no setup is needed
+    if (repoType.value === 'direct') {
+      error.value = 'success';
+      setupCommand.value = ''; // No command needed for direct launch
+      loading.value = false;
+      return;
+    }
+
+    // For other repo types, prepare configuration
     const config = {
       repoUrl: repoUrl.value,
       repoType: repoType.value,
@@ -338,44 +392,16 @@ const launchCodespace = async () => {
     const configStr = JSON.stringify(config);
     const configBase64 = btoa(configStr);
 
-    // Build Codespace URL
-    const workspaceRepo = 'texra-ai/texra-workspace';
-    const codespaceUrl = new URL(`https://github.com/codespaces/new`);
-
-    // Add parameters
-    codespaceUrl.searchParams.set('hide_repo_select', 'true');
-    codespaceUrl.searchParams.set('ref', 'main');
-    codespaceUrl.searchParams.set('repo', workspaceRepo);
-    codespaceUrl.searchParams.set('skip_quickstart', 'true');
-
-    // Add environment variable with config
-    // Note: GitHub Codespaces doesn't support passing env vars via URL directly
-    // We'll need to use a different approach - store config temporarily or use secrets
-
-    // For now, we'll open the codespace and show instructions
-    const instructionsUrl = `https://github.com/${workspaceRepo}?setup=${encodeURIComponent(configBase64)}`;
-
     // Store config in sessionStorage for manual retrieval
     if (typeof window !== 'undefined') {
       sessionStorage.setItem('texra-launch-config', configBase64);
     }
 
-    // Open the Codespace creation page
-    window.open(codespaceUrl.toString(), '_blank');
-
     // Store the setup command
     setupCommand.value = `echo '${configBase64}' | base64 -d > /tmp/texra-config.json && bash /workspaces/texra-workspace/.devcontainer/auto-setup.sh`;
 
-    // Show success message with instructions
-    if (repoType.value === 'overleaf') {
-      if (authMethod.value === 'secrets') {
-        error.value = `success`;
-      } else {
-        error.value = `success`;
-      }
-    } else {
-      error.value = `success`;
-    }
+    // Show success message
+    error.value = `success`;
   } catch (err) {
     error.value = `Error: ${err.message}`;
   } finally {
@@ -754,5 +780,20 @@ const launchCodespace = async () => {
   color: white;
   transform: translateY(-2px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.info-note {
+  margin: 1.5rem 0;
+  padding: 1.25rem;
+  background: var(--vp-c-bg);
+  border-radius: 8px;
+  border-left: 4px solid var(--vp-c-brand);
+}
+
+.info-note p {
+  margin: 0;
+  color: var(--vp-c-text-1);
+  font-size: 0.95rem;
+  line-height: 1.6;
 }
 </style>
