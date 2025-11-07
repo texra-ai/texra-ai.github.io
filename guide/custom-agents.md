@@ -52,7 +52,7 @@ settings:
 
   # Output Handling
   documentTag: document # The main XML tag wrapping the agent's final output (required for CoT).
-  endTag: '</document>' # The closing tag that signals the agent has finished its main output.
+  endTag: "</document>" # The closing tag that signals the agent has finished its main output.
   outputExt: tex # Default file extension for the output file (e.g., tex, md, txt).
   prefills:
     - "<document>\n" # List of strings the AI should start its response(s) with.
@@ -139,6 +139,7 @@ This mechanism is sometimes referred to as **Variable Retrieval (VR)**—the ext
 
 - Files specified in `requiredFiles` or `requiredFilesInternal` are available as `{{ VARNAME_CONTENT }}` (e.g., `{{ TEMPLATE_CONTENT }}`).
 - Files matched by `filePatternsContain` are available as `{{ VARNAME_CONTENT }}` (e.g., `{{ BIBLIOGRAPHY_CONTENT }}`).
+- When agents finish, TeXRA automatically captures detected XML segments so orchestrated workflows can reuse them without going through the file picker again (details below).
 
 **Example Usage in `userPrefix`:**
 
@@ -164,6 +165,19 @@ userPrefix: |
 - **Start Simple:** Begin with basic settings/prompts and add complexity incrementally.
 - **Test Iteratively:** Test frequently and review logs in the ProgressBoard.
 
+### Runtime XML exports
+
+Reflection-style agents automatically collect a lightweight summary of the XML they generate. The summary is exposed as
+`runtimeXmlExports` on the agent instance so pipeline orchestrators can forward the results to follow-up steps.
+
+The structure includes three simple fields:
+
+- `tagContents`: a dictionary of detected XML tags. For `<document>` outputs this contains either a single string or an array of strings (when the model generated multiple named documents). A `<scratchpad>` tag is captured when present.
+- `documents`: a list of serialized `<document>` elements suitable for pasting directly into the next prompt.
+- `singleOutputFile`: the processed output path when the agent produced exactly one LaTeX document.
+
+Because this data lives alongside the run state, orchestrators can choose how to apply it—for example, by inserting the serialized documents straight into the next request or by handing off the processed file path to a critique step.
+
 ### Tool-Use Agents
 
 Tools live under `src/tools/` and each one defines its input schema with Zod.
@@ -173,7 +187,7 @@ workspace utilities like `bash`, `read_file`, `write_file`, `edit_file`,
 `str_replace_editor`, `wolfram`,
 `web_fetch`, and `web_search`.
 
-> **Tip:** The `read_file` tool returns only the first 400 lines of a file to prevent massive responses from overwhelming the progress log. Provide an optional `range` object (for example, `{"start": 401, "end": 450}`) to page through a file beyond the first 400 lines. The tool enforces the same 400-line limit on each requested window, reports the specific line range that was returned, and notes when the requested end exceeds the file length so you know the response was clipped.
+> **Tip:** The `read_file` tool returns only the first 2,000 lines of a file (per request) to prevent massive responses from overwhelming the progress log. Provide an optional `range` object (for example, `{"start": 401, "end": 450}`) to page through a file beyond the first 2,000 lines. The tool enforces the same 2,000-line limit on each requested window, prefixes each line with a `cat -n` style line number, reports the specific line range that was returned, and notes when the requested end exceeds the file length so you know the response was clipped. When copying text for `edit_file`, use only the content after the line-number prefix.
 
 For a minimal read-only configuration, see the built-in `ask` agent
 (`resources/tool_use_agents/ask.yaml`), which only grants `read_file`, `glob`,
@@ -182,7 +196,7 @@ For a minimal read-only configuration, see the built-in `ask` agent
 Common workspace helpers:
 
 - `glob` — Quickly list files matching a pattern, sorted by modification time.
-- `grep` — Run ripgrep searches without leaving the workspace sandbox.
+- `grep` — Run ripgrep searches without leaving the workspace sandbox. By default it returns matching content lines; switch the `output_mode` to `files_with_matches` or `count` to change the response format.
 - `ls` — Inspect directory contents with optional ignore globs.
 
 Example:

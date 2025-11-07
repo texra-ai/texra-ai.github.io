@@ -9,8 +9,8 @@ Additional fields depend on the provider. A typical entry looks like:
 ```ts
 const tools: ToolDefinition[] = [
   {
-    name: 'searchWeb',
-    description: 'Perform a web search',
+    name: "searchWeb",
+    description: "Perform a web search",
     parameters: {
       /* JSON schema */
     },
