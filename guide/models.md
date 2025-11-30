@@ -24,8 +24,10 @@ Known for strong instruction following and context handling.
 
 | Model ID    | Key Strength / Use Case                     | Relative Cost | Relative Speed | Notes                           |
 | :---------- | :------------------------------------------ | :------------ | :------------- | :------------------------------ |
-| `opus41T`   | Latest Opus with explicit reasoning steps   | $$$$          | Slow           | Claude 4.1 Opus with thinking   |
-| `opus41`    | Latest high quality, complex tasks          | $$$$          | Slow           | Claude 4.1 Opus                 |
+| `opus45T`   | Latest Opus with explicit reasoning steps   | $$$$          | Slow           | Claude 4.5 Opus with thinking   |
+| `opus45`    | Latest high quality, complex tasks          | $$$$          | Slow           | Claude 4.5 Opus                 |
+| `opus41T`   | Previous-gen Opus with explicit reasoning   | $$$$          | Slow           | Claude 4.1 Opus with thinking   |
+| `opus41`    | Previous-gen high quality, complex tasks    | $$$$          | Slow           | Claude 4.1 Opus                 |
 | `opus4T`    | Opus 4 with explicit reasoning steps        | $$$$          | Slow           | Claude 4 Opus with thinking     |
 | `opus4`     | Opus 4 high quality, complex tasks          | $$$$          | Slow           | Claude 4 Opus                   |
 | `sonnet45T` | Latest Sonnet with explicit reasoning steps | $$$           | Medium         | Claude 4.5 Sonnet with thinking |
@@ -46,27 +48,34 @@ To experiment with Anthropic's 1M-token context window for Sonnet 4 or 4.5, ena
 
 Known for strong reasoning and creative capabilities.
 
-| Model ID  | Key Strength / Use Case               | Relative Cost | Relative Speed | Notes                            |
-| :-------- | :------------------------------------ | :------------ | :------------- | :------------------------------- |
-| `o1`      | Advanced reasoning, math, figures     | $$$$          | Slow           | Explicit reasoning               |
-| `gpt45`   | High quality, vision (Preview)        | $$$$          | Medium         |                                  |
-| `gpt5pro` | Premium reasoning & coding            | $$$$          | Slow           | 400k ctx, 272k max output        |
-| `gpt5`    | Flagship reasoning & coding           | $$$           | Medium         | 400k context                     |
-| `gpt5-`   | Flagship mini, fast                   | $$            | Fast           | 400k context, mini               |
-| `gpt5--`  | Flagship nano, fastest                | $             | Very Fast      | 400k context, nano               |
-| `gpt41`   | Long-context vision, powerful         | $$$           | Medium         | 1M tokens context                |
-| `gpt41-`  | Long-context vision, cost-effective   | $$            | Medium         | 1M tokens context, mini          |
-| `gpt41--` | Long-context vision, cheapest         | $             | Medium         | 1M tokens context, nano          |
-| `gpt4o`   | Strong all-rounder, vision            | $$$           | Medium         | Good default choice              |
-| `gpt4ol`  | Latest `gpt4o`, potentially better    | $$$           | Medium         |                                  |
-| `o3`      | Coding, tool calling                  | $$$           | Medium         |                                  |
-| `o3pro`   | Reliable answers, heavy compute       | $$$$          | Slow           | `o3-pro`                         |
-| `o3-`     | Fast reasoning                        | $$$           | Fast           | `o3-mini`                        |
-| `o1-`     | Fast reasoning (smaller `o1`)         | $$$           | Fast           | `o1-mini`                        |
-| `gptoss`  | Open-weight reasoning, large context  | $$            | Medium         | `gpt-oss-120b` (OpenRouter only) |
-| `gptoss-` | Open-weight reasoning, cost-effective | $             | Fast           | `gpt-oss-20b` (OpenRouter only)  |
+| Model ID  | Key Strength / Use Case                | Relative Cost | Relative Speed | Notes                                    |
+| :-------- | :------------------------------------- | :------------ | :------------- | :--------------------------------------- |
+| `o1`      | Advanced reasoning, math, figures      | $$$$          | Slow           | Explicit reasoning                       |
+| `gpt45`   | High quality, vision (Preview)         | $$$$          | Medium         |                                          |
+| `gpt5pro` | Premium reasoning & coding             | $$$$          | Slow           | 400k ctx, 272k max output                |
+| `gpt51`   | Flagship reasoning w/ low-latency mode | $$$           | Medium         | New GPT-5.1 defaults to `none` reasoning |
+| `gpt5`    | Flagship reasoning & coding            | $$$           | Medium         | 400k context                             |
+| `gpt5-`   | Flagship mini, fast                    | $$            | Fast           | 400k context, mini                       |
+| `gpt5--`  | Flagship nano, fastest                 | $             | Very Fast      | 400k context, nano                       |
+| `gpt41`   | Long-context vision, powerful          | $$$           | Medium         | 1M tokens context                        |
+| `gpt41-`  | Long-context vision, cost-effective    | $$            | Medium         | 1M tokens context, mini                  |
+| `gpt41--` | Long-context vision, cheapest          | $             | Medium         | 1M tokens context, nano                  |
+| `gpt4o`   | Strong all-rounder, vision             | $$$           | Medium         | Good default choice                      |
+| `gpt4ol`  | Latest `gpt4o`, potentially better     | $$$           | Medium         |                                          |
+| `o3`      | Coding, tool calling                   | $$$           | Medium         |                                          |
+| `o3pro`   | Reliable answers, heavy compute        | $$$$          | Slow           | `o3-pro`                                 |
+| `o3-`     | Fast reasoning                         | $$$           | Fast           | `o3-mini`                                |
+| `o1-`     | Fast reasoning (smaller `o1`)          | $$$           | Fast           | `o1-mini`                                |
+| `gptoss`  | Open-weight reasoning, large context   | $$            | Medium         | `gpt-oss-120b` (OpenRouter only)         |
+| `gptoss-` | Open-weight reasoning, cost-effective  | $             | Fast           | `gpt-oss-20b` (OpenRouter only)          |
 
-> **Note:** GPT-5 and GPT-5 Pro reasoning summaries require additional account verification. TeXRA disables them by default—enable `"texra.model.gpt5ReasoningSummary": true` if your account supports this feature.
+> **Note:** GPT-5.1, GPT-5, and GPT-5 Pro reasoning summaries require additional account verification. TeXRA disables them by default—enable `"texra.model.gpt5ReasoningSummary": true` if your account supports this feature.
+
+**GPT-5.1 highlights**
+
+- Default reasoning effort is `none`, making it faster for back-and-forth prompts while still supporting `low`, `medium`, and `high` effort when you need deeper analysis.
+- Shares GPT-5's 400k-token context window, 128k output ceiling, pricing, and predictive output support, so it is a drop-in upgrade for existing GPT-5 workflows.
+- Adds OpenAI's new `apply_patch` and `shell` tools for multi-step coding tasks; enable them through TeXRA's tool configuration if you rely on automated refactors.
 
 ### Google Models
 
@@ -188,7 +197,7 @@ Consider these factors:
 - **Task Complexity**: Simple corrections might only need a `$`/Fast model (`gemini2f`), while complex paper transformations benefit from `$$$$`/Slow models (`opus`, `o1`).
 - **Budget**: Use cost indicators ($ - $$$$) to guide selection.
 - **Speed**: If quick turnaround is needed, prefer Fast/Very Fast models.
-- **Special Capabilities**: Do you need explicit reasoning (`sonnet45T`, `sonnet37T`, `gemini2fT`, `o1`, `o3-`, `o1-`, `gptoss`, `gptoss-`, `dsr1`), vision (`gpt5`, `gpt5pro`, `gpt4o`, `gemini*`), native PDF/audio (`gemini*`), or very large context (`gemini*`, `gpt41`, `gpt5`, `gpt5pro`)?
+- **Special Capabilities**: Do you need explicit reasoning (`sonnet45T`, `sonnet37T`, `gemini2fT`, `o1`, `o3-`, `o1-`, `gptoss`, `gptoss-`, `dsr1`), vision (`gpt51`, `gpt5`, `gpt5pro`, `gpt4o`, `gemini*`), native PDF/audio (`gemini*`), or very large context (`gemini*`, `gpt41`, `gpt51`, `gpt5`, `gpt5pro`)?
 
 Experimentation is often key to finding the best model for your specific needs and writing style.
 
@@ -197,20 +206,18 @@ Experimentation is often key to finding the best model for your specific needs a
 You can customize which models appear in the TeXRA dropdown list via VS Code Settings (`Ctrl+,`). Search for `texra.models` and edit the JSON array. Here are the defaults:
 
 ::: tip Model Availability
-The specific models available by default and their identifiers (`sonnet45`, `gpt5`, `gpt5pro`, etc.) are maintained by the TeXRA developers and may change in future updates based on new releases and performance evaluations.
+The specific models available by default and their identifiers (`sonnet45`, `gpt51`, `gpt5`, `gpt5pro`, etc.) are maintained by the TeXRA developers and may change in future updates based on new releases and performance evaluations.
 :::
 
 ```json
 "texra.models": [
-  "gemini25p",
-  "gemini25f",
-  "opus41T",
+  "gemini3p",
   "sonnet45T",
-  "sonnet4T",
-  "gpt5",
+  "opus45T",
+  "gpt51",
   "gpt41",
-  "deepseek",
   "deepseekT",
+  "kimi2T",
   "kimi2",
   "qwen3max",
   "grok4"

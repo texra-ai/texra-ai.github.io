@@ -3,7 +3,7 @@ layout: home
 hero:
   name: TeXRA
   text: Reliable AI Workflows for Scientific Discovery
-  tagline: Agentic research assistant for mathematicians, physicists, and research engineers
+  tagline: Agentic research assistant for AI scientists, physicists, and research engineers
   image:
     src: /logo-1024x1024.svg
     alt: TeXRA Logo
