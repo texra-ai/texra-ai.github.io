@@ -1,0 +1,1 @@
+import{_ as t,o as r,c as a,a6 as i}from"./chunks/framework.4tsfTCyC.js";const p=JSON.parse('{"title":"Terms of Service","description":"","frontmatter":{},"headers":[],"relativePath":"terms.md","filePath":"terms.md"}'),o={name:"terms.md"};function n(s,e,l,c,d,u){return r(),a("div",null,[...e[0]||(e[0]=[i("",74)])])}const m=t(o,[["render",n]]);export{p as __pageData,m as default};
